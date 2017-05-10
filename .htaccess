@@ -1,0 +1,18 @@
+DirectoryIndex index.php
+ErrorDocument 404 error.php
+
+RewriteEngine on
+
+RewriteRule ^shop/([a-zA-Z0-9-]+)/?$ shop.php?id=$1&order=$3 [L,QSA]
+RewriteRule ^category/([a-zA-Z0-9-]+)/?$ category.php?code=$1 [L,QSA]
+RewriteRule ^product/([a-zA-Z0-9-]+)/?$ product.php?id=$1 [L,QSA]
+
+RewriteRule ^login login.php [L,QSA]
+RewriteRule ^register register.php [L,QSA]
+RewriteRule ^checkout checkout.php [L,QSA]
+RewriteRule ^discover discover.php [L,QSA]
+RewriteRule ^contact contact.php [L,QSA]
+RewriteRule ^products products.php [L,QSA]
+RewriteRule ^products1 products1.php [L,QSA]
+RewriteRule ^single single.php [L,QSA]
+RewriteRule ^allcategories allcategories.php [L,QSA]
