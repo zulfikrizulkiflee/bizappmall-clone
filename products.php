@@ -99,13 +99,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span class="icon-bar"></span>
                             </button>
                             <div class="navbar-brand logo-nav-left wow fadeInLeft animated" data-wow-delay=".5s">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="/Project%20BizApp/bizappmall">Classic<span>Style</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../">Classic<span>Style</span></a></h1>
                             </div>
 
                         </div>
                         <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
                             <ul class="nav navbar-nav">
-                                <li><a href="/Project%20BizApp/bizappmall" class="act">Home</a></li>
+                                <li><a href="../" class="act">Home</a></li>
                                 <!-- Mega Menu -->
                                 <li class="dropdown active">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Women <b class="caret"></b></a>
@@ -226,7 +226,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="banner-top">
             <div class="container">
                 <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Products</h2>
-                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="/Project%20BizApp/bizappmall">Home</a><label>/</label>Products<label>/</label>Women's</h3>
+                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../">Home</a><label>/</label>Products<label>/</label>Women's</h3>
                 <div class="clearfix"> </div>
             </div>
         </div>

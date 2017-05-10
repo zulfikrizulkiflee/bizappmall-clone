@@ -102,7 +102,7 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="/Project%20BizApp/bizappmall"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">

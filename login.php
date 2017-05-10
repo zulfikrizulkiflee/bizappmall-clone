@@ -3,7 +3,7 @@
     include("connection.php"); //Establishing connection with our database
 
     if(isset($_SESSION['username'])){
-        header("location: /Project%20BizApp/bizappmall");
+        header("location: ../");
     }
 
     $error = ""; //Variable for storing our errors.
@@ -32,7 +32,7 @@
             if(mysqli_num_rows($result) == 1){
                 $login_user=$row['id'];
                 $_SESSION['id'] = $login_user; // Initializing Session
-                header("location: /Project%20BizApp/bizappmall"); // Redirecting To Other Page
+                header("location: ../"); // Redirecting To Other Page
             }else{
                 $error = "Incorrect username or password.";
             }
@@ -140,7 +140,7 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="/Project%20BizApp/bizappmall"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">
@@ -161,7 +161,7 @@
         <div class="banner-top">
             <div class="container">
                 <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Login</h2>
-                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="/Project%20BizApp/bizappmall">Home</a><label>/</label>Login</h3>
+                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../">Home</a><label>/</label>Login</h3>
                 <div class="clearfix"> </div>
             </div>
         </div>

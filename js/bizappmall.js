@@ -562,7 +562,7 @@ if (page_name === "shop") {
 
 //get like
 function getLikeNumber(action, target, target_class, id) {
-    $.getJSON('/Project%20BizApp/bizappmall/get_like_number.php?action=' + action + '&target=' + target + '&id=' + id, function (data) {
+    $.getJSON('..//get_like_number.php?action=' + action + '&target=' + target + '&id=' + id, function (data) {
         if (action == "check") {
 
         }
