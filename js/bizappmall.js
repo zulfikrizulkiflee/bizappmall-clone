@@ -14,8 +14,13 @@ var appname = $(location).attr('hostname');
 
 var page = $(location).attr('pathname');
 page = page.split('/');
+var home = '/' + page[1] + '/' + page[2];
+var logout = home + '/logout.php';
+console.log(logout);
 page = page[(page.length - 1)];
 console.log(page);
+
+$('.logo-nav-left a').attr('href', home);
 
 var title_change = page.substr(0, 1).toUpperCase() + page.substr(1);
 
@@ -46,31 +51,102 @@ window.onload = function () {
     }
 }
 
-var userdrw_width = ($('.header-right1').width() / 2) + $('.container').css('margin-right') + $('.header-right2').width();
+//var userdrw_width = ($('.header-right1').width() / 2) + $('.container').css('margin-right') + $('.header-right2').width();
 
-$('#user-drawer-content').css('right', userdrw_width + 'px');
+//$('#user-drawer-content').css('right', userdrw_width + 'px');
+var drawer_content = '<ul id="popover-content" class="list-group" style="display: none"> <a href=""><li id="user-drawer-button">My purchase</li></a><a href="' + logout + '"><li id="user-drawer-button" class="logout-btn" style="color:#29ABE2">Logout</li></a> </ul>';
+$('body').append(drawer_content);
 
-$('#user-drawer').on('click', function () {
-    if ($('#user-drawer-content').hasClass('active')) {
-        $('#user-drawer-content').removeClass('active');
+$('[data-toggle="popover"]').popover({
+    html: true,
+    content: function () {
+        return $('#popover-content').html();
+    }
+});
+
+//$('#user-drawer').on('click', function () {
+//    if ($('#user-drawer-content').hasClass('active')) {
+//        $('#user-drawer-content').removeClass('active');
+//    } else {
+//        $('#user-drawer-content').addClass('active');
+//    }
+//});
+
+//$(document).mouseup(function (e) {
+//    var $container = $("#user-drawer");
+//
+//    // if the target of the click isn't the container nor a descendant of the container
+//    if (!$container.is(e.target) && $container.has(e.target).length === 0) {
+//        $('#user-drawer-content').removeClass('active');
+//    }
+//});
+
+//$('.logout-btn').on('click', function () {
+//    window.open(logout, '_self');
+//});
+
+//add item modal
+
+
+
+//search function
+//    search
+var suggest_box = '<div class="bizapp-dropdown-popover search-popover col-xs-12 col-md-12" style="visibility:hidden;position:absolute;top:50px;left:0;width:230px;height:100px;z-index:2;border:1px solid lightgray;"> <ul style="width:100%"> <li class="dropdown-price price-low-high search-popover-list shop-search" data-option="lowhigh"><i class="fa fa-building-o" aria-hidden="true"></i> Search \"<span class="search-param"></span>\" shop</li></ul> </div>';
+$('.input-group').append(suggest_box);
+var searchlength = $('.input-group-btn').width();
+$('.search-popover').css('width', 'calc(100% - ' + searchlength + 'px)');
+
+var click = $('.search-btn').on('click', function () {
+    var searchParam = $('.search-input').val();
+    startSearch(searchParam);
+});
+
+$('.search-input').keyup(function (e) {
+    var search_param = $(this).val();
+    var search_length = $(this).val().length;
+    console.log(search_length);
+    $('.search-param').text(search_param);
+
+    $('.shop-search').on('click', function () {
+        window.open(home + '/search-shop/' + search_param, '_self');
+    });
+
+    if (search_length > 0) {
+        $('.bizapp-dropdown-popover').css('visibility', 'visible');
     } else {
-        $('#user-drawer-content').addClass('active');
+        $('.bizapp-dropdown-popover').css('visibility', 'hidden');
     }
+
+    var code = e.which; // recommended to use e.which, it's normalized across browsers
+    if (code == 13) e.preventDefault();
+    if (code == 13 || click == true) {
+        var searchParam = $(this).val();
+        alert(searchParam);
+        //        startSearch(searchParam);
+    } // missing closing if brace
 });
 
-$(document).mouseup(function (e) {
-    var $container = $("#user-drawer");
+function startSearch(searchParam) {
+    //    window.open('search.html?param=' + searchParam, '_self');
+}
+//    search
 
-    // if the target of the click isn't the container nor a descendant of the container
-    if (!$container.is(e.target) && $container.has(e.target).length === 0) {
-        $('#user-drawer-content').removeClass('active');
-    }
-});
+//function getParam(param) {
+//    var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
+//    return results[1] || 0;
+//}
+//
+//var searchParam = getParam('param');
+//console.log(searchParam);
+//
+//if (searchParam == "") {
+//    $('.search-input').val("");
+//} else {
+//    $('.search-input').val(decodeURIComponent(searchParam));
+//}
 
-$('.logout-btn').on('click', function () {
-    window.open('logout.php', '_self');
-});
 
+//end search
 
 if ($(window).width() <= 600) {
     var headerw = $('.header-grid').height();
@@ -119,92 +195,31 @@ if (page == '') {
                 desc = desc.replace(/---/g, '');
                 if (desc == "TERBUKA") {
                     desc = "MISC";
+                } else {
+                    var cat_str = '<a href="category/' + data.code + '"><div class="col-xs-4 col-md-2 category-grid"><div><img class="category-icon" src="myimages/category/' + iconArr[i] + '.png"></div>' + desc + '</div></a>';
+                    $('.categories').append(cat_str);
                 }
-                var cat_str = '<a href="category/' + data.code + '"><li><div><img class="category-icon" src="myimages/category/' + iconArr[i] + '.png"></div>' + desc + '</li></a>';
-                $('.category-list').append(cat_str);
+
             });
             var t = 0; // the height of the highest element (after the function runs)
             var t_elem; // the highest element (after the function runs)
-            $('.categories ul li').each(function () {
+            $('.category-grid').each(function () {
                 $this = $(this);
                 if ($this.outerHeight() > t) {
                     t_elem = this;
                     t = $this.outerHeight();
                 }
             });
-            $('.categories ul li').attr('style', 'height:' + t + 'px');
+            $('.category-grid').attr('style', 'height:' + t + 'px');
         });
     }
 
 
     //get top products
-    getTopProducts();
-
-    function getTopProducts() {
-        $.getJSON('http://mall.bizapp.my/get_products.php?action=teaser&limit=6', function (data) {
-            $.each(data, function (i, data) {
-                var top_str = '<a href="product/' + data.id + '"><li class="product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"></div><p class="item_name">' + data.productname + '</p><p class="price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></li></a>';
-                $('.top-product-list').append(top_str);
-                var selector = '.item_like_' + data.id;
-                getLikeNumber("get", "product", selector, data.id);
-            });
-            var t = 0; // the height of the highest element (after the function runs)
-            var t_elem; // the highest element (after the function runs)
-            $('.top-products ul li').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > t) {
-                    t_elem = this;
-                    t = $this.outerHeight();
-                }
-            });
-            $('.top-products ul li').attr('style', 'height:' + t + 'px');
-            var f = 0; // the height of the highest element (after the function runs)
-            var f_elem; // the highest element (after the function runs)
-            $('.top-products ul li .item_name').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > f) {
-                    f_elem = this;
-                    f = $this.outerHeight();
-                }
-            });
-            $('.top-products ul li .item_name').attr('style', 'height:' + f + 'px');
-        });
-    }
+    getProductsWithLimit('.top-products', 6);
 
     //get discover products
-    getDiscover(1);
-
-    function getDiscover(page) {
-        $.getJSON('http://mall.bizapp.my/get_products.php?action=browseP&code=000&sortby=date&orderby=desc&page=' + page, function (data) {
-            $('.discover-list').html('');
-            $.each(data, function (i, data) {
-                var top_str = '<a href="product/' + data.id + '"><li class="product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"></div><p class="item_name">' + data.productname + '</p><p class="price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></li></a>';
-                $('.discover-list').append(top_str);
-                var selector = '.item_like_' + data.id;
-                getLikeNumber("get", "product", selector, data.id);
-            });
-            var t = 0; // the height of the highest element (after the function runs)
-            var t_elem; // the highest element (after the function runs)
-            $('.discover ul li').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > t) {
-                    t_elem = this;
-                    t = $this.outerHeight();
-                }
-            });
-            $('.discover ul li').attr('style', 'height:' + t + 'px');
-            var f = 0; // the height of the highest element (after the function runs)
-            var f_elem; // the highest element (after the function runs)
-            $('.discover ul li .item_name').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > f) {
-                    f_elem = this;
-                    f = $this.outerHeight();
-                }
-            });
-            $('.discover ul li .item_name').attr('style', 'height:' + f + 'px');
-        });
-    }
+    getProductsNoLimit('browseP', '.discover-list', '000', 'date', 'desc', 1);
 
 }
 
@@ -236,40 +251,8 @@ if (page_name === "category") {
         $('.side-category > p > a').attr('style', 'color:#f57400 !important');
     }
     //get discover products
-    getDiscoverInside(1);
+    getProductsNoLimit('browseP', '.category-inside-list', category_code, 'date', 'desc', page);
 
-    function getDiscoverInside(page) {
-        $.getJSON('http://mall.bizapp.my/get_products.php?action=browseP&code=' + category_code + '&sortby=date&orderby=desc&page=' + page, function (data) {
-            $('.category-inside-list').html('');
-            $.each(data, function (i, data) {
-                getLikeNumber("get", "product", data.id);
-                var top_str = '<a href="../product/' + data.id + '"><li class="product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"></div><p class="item_name">' + data.productname + '</p><p class="price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></li></a>';
-                $('.category-inside-list').append(top_str);
-                var selector = '.item_like_' + data.id;
-                getLikeNumber("get", "product", selector, data.id);
-            });
-            var t = 0; // the height of the highest element (after the function runs)
-            var t_elem; // the highest element (after the function runs)
-            $('.discover ul li').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > t) {
-                    t_elem = this;
-                    t = $this.outerHeight();
-                }
-            });
-            $('.discover ul li').attr('style', 'height:' + t + 'px');
-            var f = 0; // the height of the highest element (after the function runs)
-            var f_elem; // the highest element (after the function runs)
-            $('.discover ul li .item_name').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > f) {
-                    f_elem = this;
-                    f = $this.outerHeight();
-                }
-            });
-            $('.discover ul li .item_name').attr('style', 'height:' + f + 'px');
-        });
-    }
 
     //get footer category JSON
     generateSideCategoryList(category_code);
@@ -279,10 +262,13 @@ if (page_name === "category") {
             totalPages: 20,
             visiblePages: 5,
             onPageClick: function (event, page) {
-                getDiscoverInside(page);
+                getProductsNoLimit('browseP', '.category-inside-list', category_code, 'date', 'desc', page);
+                $('html, body').animate({
+                    scrollTop: 0
+                }, '500', function () {});
             }
         }).on('page', function (event, page) {
-            console.info(page + ' (from event listening)');
+            //            console.info(page + ' (from event listening)');
         });
     });
 
@@ -313,45 +299,18 @@ if (page === "discover") {
     //get discover products
     var page = 1;
 
-    function getDiscoverInside(page) {
-        $.getJSON('http://mall.bizapp.my/get_products.php?action=browseP&code=000&sortby=date&orderby=desc&page=' + page, function (data) {
-            $('.category-inside-list').html('');
-            $.each(data, function (i, data) {
-                getLikeNumber("get", "product", data.id);
-                var top_str = '<a href="product/' + data.id + '"><li class="product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"></div><p class="item_name">' + data.productname + '</p><p class="price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></li></a>';
-                $('.category-inside-list').append(top_str);
-                var selector = '.item_like_' + data.id;
-                getLikeNumber("get", "product", selector, data.id);
-            });
-            var t = 0; // the height of the highest element (after the function runs)
-            var t_elem; // the highest element (after the function runs)
-            $('.discover ul li').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > t) {
-                    t_elem = this;
-                    t = $this.outerHeight();
-                }
-            });
-            $('.discover ul li').attr('style', 'height:' + t + 'px');
-            var f = 0; // the height of the highest element (after the function runs)
-            var f_elem; // the highest element (after the function runs)
-            $('.discover ul li .item_name').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > f) {
-                    f_elem = this;
-                    f = $this.outerHeight();
-                }
-            });
-            $('.discover ul li .item_name').attr('style', 'height:' + f + 'px');
-        });
-    }
+    getProductsNoLimit('browseP', '.category-inside-list', '000', 'date', 'desc', page);
+
 
     $(function () {
         window.pagObj = $('#pagination').twbsPagination({
             totalPages: 20,
             visiblePages: 5,
             onPageClick: function (event, page) {
-                getDiscoverInside(page);
+                getProductsNoLimit('.category-inside-list', '000', 'date', 'desc', page);
+                $('html, body').animate({
+                    scrollTop: 0
+                }, '500', function () {});
             }
         }).on('page', function (event, page) {
             //            console.info(page + ' (from event listening)');
@@ -374,12 +333,19 @@ if (page_name === "product") {
             var shop_img = '';
 
             $.each(data, function (i, data) {
+                var prod_detail = data.productdesc;
+                if (prod_detail.length != 0) {
+                    $('.item_detail').html(prod_detail);
+                } else {
+                    $('.item_detail').html("No detail available");
+                }
                 var star = '<i class="fa fa-star" aria-hidden="true"></i>';
                 $('.item_name').html(data.productname);
                 $('.item_price').html('RM' + data.price);
                 $('.item_rating').html(star.repeat(5));
-                $('.item_pname').html('<a href="../shop/' + data.pid + '" style="color:#f57400"><img class="shop-logo" src="" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + data.nama + '</a>');
-                $('.item_detail').html(data.productdesc);
+                $('.item_pid').html(data.pid);
+                $('.item_prodid').html(data.id);
+                $('.item_pname').html('<a href="' + home + '/shop/' + data.pid + '" style="color:#f57400"><img class="shop-logo" src="" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + data.nama + '</a>');
                 $('.product-image-container .item_image').attr('src', link_product + data.attachment);
 
                 if (data.attachment != null) {
@@ -394,6 +360,29 @@ if (page_name === "product") {
                 if (data.attachmentweb3 != null) {
                     $('.product-image-list ul li:nth-child(4)').html('<img src="' + link_product + data.attachmentweb3 + '">');
                 }
+
+                $.getJSON('http://mall.bizapp.my/get_category.php', function (dataMain) {
+                    $.each(dataMain, function (i, dataMain) {
+                        if (dataMain.code == data.productcategorycode) {
+                            var desc = dataMain.description_en;
+                            desc = desc.replace(/---/g, '');
+                            if (desc == "TERBUKA") {
+                                desc = "MISC";
+                            }
+                            desc = desc.toLowerCase();
+                            var cat_tag = '<a href="' + home + '/category/' + data.productcategorycode + '"><span class="product-tag label label-default">#' + desc + '</span></a>';
+                            var brand_tag = '';
+
+                            if (data.productbrand.length != 0) {
+                                brand_tag = '<a href="' + home + '/search/' + data.productbrand.toLowerCase() + '"><span class="product-tag label label-default">#' + data.productbrand.toLowerCase() + '</span></a>';
+                            }
+
+                            $('.product-tag-container').append(cat_tag + brand_tag);
+                        }
+                    });
+                });
+
+
             });
 
             $.getJSON('http://mall.bizapp.my/get_shop.php?order=shop_detail&id=' + pid, function (dataShop) {
@@ -410,14 +399,26 @@ if (page_name === "product") {
                 }
             });
 
+            var count = 4;
             $('.product-image-container img').each(function () {
                 if ($(this).attr('src') == link_product) {
                     $(this).parent().remove();
+                    count--;
+                }
+                if (count <= 1) {
+                    $('.product-image-list').css('display', 'none');
                 }
             });
+
+            $('.product-image-container ul li:first-child').css('border', '2px solid #f57400');
+
             $('.product-image-container ul li').each(function () {
                 $(this).on('click', function () {
                     $('.product-image-container .item_image').attr('src', $(this).children('img').attr('src'));
+                    $('.product-image-container ul li').each(function () {
+                        $(this).css('border', '1px solid lightgray');
+                    });
+                    $(this).css('border', '2px solid #f57400');
                 });
             });
             var img_cont_height = $('.product-image-container').height() + 18;
@@ -427,38 +428,17 @@ if (page_name === "product") {
     }
 
     //get top products
-    getSuggestProducts();
-
-    function getSuggestProducts() {
-        $.getJSON('http://mall.bizapp.my/get_products.php?action=teaser&limit=6', function (data) {
-            $.each(data, function (i, data) {
-                var top_str = '<a href="' + data.id + '"><li class="product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"></div><p class="item_name">' + data.productname + '</p><p class="price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></li></a>';
-                $('.suggest-product-list').append(top_str);
-                var selector = '.item_like_' + data.id;
-                getLikeNumber("get", "product", selector, data.id);
-            });
-            var t = 0; // the height of the highest element (after the function runs)
-            var t_elem; // the highest element (after the function runs)
-            $('.suggest-product-list li').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > t) {
-                    t_elem = this;
-                    t = $this.outerHeight();
-                }
-            });
-            $('.suggest-product-list li').attr('style', 'height:' + t + 'px');
-            var f = 0; // the height of the highest element (after the function runs)
-            var f_elem; // the highest element (after the function runs)
-            $('.suggest-product-list li .item_name').each(function () {
-                $this = $(this);
-                if ($this.outerHeight() > f) {
-                    f_elem = this;
-                    f = $this.outerHeight();
-                }
-            });
-            $('.suggest-product-list li .item_name').attr('style', 'height:' + f + 'px');
+    getProductsWithLimit('.suggest-product-list', 6);
+    $(function () {
+        $('#processing-modal').on('show.bs.modal', function () {
+            var myModal = $(this);
+            clearTimeout(myModal.data('hideInterval'));
+            myModal.data('hideInterval', setTimeout(function () {
+                myModal.modal('hide');
+            }, 3000));
         });
-    }
+    });
+
 }
 
 if (page_name === "shop") {
@@ -500,10 +480,15 @@ if (page_name === "shop") {
 
     $('.dropdown-price').each(function () {
         $(this).on('click', function () {
-            var text = $(this).text();
+            var text = '';
             var option = $(this).attr('data-option');
 
-            $('.price-selection').text(text);
+            if (option == "lowhigh") {
+                text = 'PRICE <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>';
+            } else if (option == "highlow") {
+                text = 'PRICE <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>';
+            }
+            $('.price-selection').html(text);
             getProductShop(pid, option);
         });
     });
@@ -530,39 +515,104 @@ if (page_name === "shop") {
             product_count = data.length;
             $('.shop_products').html("Product " + product_count);
             $.each(data, function (i, data) {
-                var top_str = '<a href="../product/' + data.id + '"><li class="product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"></div><p class="item_name">' + data.productname + '</p><p class="price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></li></a>';
+                var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
                 $('.shop-product-list').append(top_str);
                 var selector = '.item_like_' + data.id;
                 getLikeNumber("get", "product", selector, data.id);
             });
             var t = 0; // the height of the highest element (after the function runs)
             var t_elem; // the highest element (after the function runs)
-            $('.shop-product-list li').each(function () {
+            $('.product-grid-wrapper').each(function () {
                 $this = $(this);
                 if ($this.outerHeight() > t) {
                     t_elem = this;
                     t = $this.outerHeight();
                 }
             });
-            $('.shop-product-list li').attr('style', 'height:' + t + 'px');
+            $('.product-grid-wrapper').attr('style', 'height:' + t + 'px');
             var f = 0; // the height of the highest element (after the function runs)
             var f_elem; // the highest element (after the function runs)
-            $('.shop-product-list li .item_name').each(function () {
+            $('.product-grid .item_name').each(function () {
                 $this = $(this);
                 if ($this.outerHeight() > f) {
                     f_elem = this;
                     f = $this.outerHeight();
                 }
             });
-            $('.shop-product-list li .item_name').attr('style', 'height:' + f + 'px');
+            $('.product-grid .item_name').attr('style', 'height:' + f + 'px');
         });
     }
 }
 
 
+//get product with limit
+function getProductsWithLimit(target, limit) {
+    $.getJSON('http://mall.bizapp.my/get_products.php?action=teaser&limit=' + limit, function (data) {
+        $.each(data, function (i, data) {
+            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
+            $(target).append(top_str);
+            var selector = '.item_like_' + data.id;
+            getLikeNumber("get", "product", selector, data.id);
+        });
+        var t = 0; // the height of the highest element (after the function runs)
+        var t_elem; // the highest element (after the function runs)
+        $('.product-grid-wrapper').each(function () {
+            $this = $(this);
+            if ($this.outerHeight() > t) {
+                t_elem = this;
+                t = $this.outerHeight();
+            }
+        });
+        $('.product-grid-wrapper').attr('style', 'height:' + t + 'px;margin-bottom:0.5em;');
+        var f = 0; // the height of the highest element (after the function runs)
+        var f_elem; // the highest element (after the function runs)
+        $('.product-grid .item_name').each(function () {
+            $this = $(this);
+            if ($this.outerHeight() > f) {
+                f_elem = this;
+                f = $this.outerHeight();
+            }
+        });
+        $('.product-grid .item_name').attr('style', 'height:' + f + 'px');
+    });
+}
+
+//get products no limit
+function getProductsNoLimit(action, target, code, sortby, orderby, page) {
+    $(target).html('');
+    $.getJSON('http://mall.bizapp.my/get_products.php?action=' + action + '&code=' + code + '&sortby=' + sortby + '&orderby=' + orderby + '&page=' + page, function (data) {
+        $.each(data, function (i, data) {
+            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
+            $(target).append(top_str);
+            var selector = '.item_like_' + data.id;
+            getLikeNumber("get", "product", selector, data.id);
+        });
+        var t = 0; // the height of the highest element (after the function runs)
+        var t_elem; // the highest element (after the function runs)
+        $('.product-grid-wrapper').each(function () {
+            $this = $(this);
+            if ($this.outerHeight() > t) {
+                t_elem = this;
+                t = $this.outerHeight();
+            }
+        });
+        $('.product-grid-wrapper').attr('style', 'height:' + t + 'px');
+        var f = 0; // the height of the highest element (after the function runs)
+        var f_elem; // the highest element (after the function runs)
+        $('.product-grid .item_name').each(function () {
+            $this = $(this);
+            if ($this.outerHeight() > f) {
+                f_elem = this;
+                f = $this.outerHeight();
+            }
+        });
+        $('.product-grid .item_name').attr('style', 'height:' + f + 'px');
+    });
+}
+
 //get like
 function getLikeNumber(action, target, target_class, id) {
-    $.getJSON('..//get_like_number.php?action=' + action + '&target=' + target + '&id=' + id, function (data) {
+    $.getJSON(home + '/get_like_number.php?action=' + action + '&target=' + target + '&id=' + id, function (data) {
         if (action == "check") {
 
         }

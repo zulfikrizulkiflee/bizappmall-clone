@@ -136,7 +136,7 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo "<li><div id='user-drawer'><i class='fa fa-user-circle-o header-icon' aria-hidden='true'></i> ".$_SESSION['username']."</div></li>";
+                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
                                         echo "<li class='pipe'>|</li>";
                                     }else{
                                         echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
@@ -157,7 +157,7 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../bizappmall"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">
@@ -178,7 +178,7 @@
         <div class="banner-top">
             <div class="container">
                 <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Register</h2>
-                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../">Home</a><label>/</label>Register</h3>
+                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../bizappmall">Home</a><label>/</label>Register</h3>
                 <div class="clearfix"> </div>
             </div>
         </div>

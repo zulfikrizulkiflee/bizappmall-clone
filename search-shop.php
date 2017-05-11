@@ -70,7 +70,7 @@
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
                         <div class="header-right2">
                             <div class="cart box_1">
-                                <a href="../checkout">
+                                <a href="checkout">
                                     <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span></h3>
                                 </a>
 

@@ -61,7 +61,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo "<li id='user-drawer'><i class='glyphicon glyphicon glyphicon-user'></i>".$_SESSION['username']."</li>";
+                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo "<li class='pipe'>|</li>";
                                     }else{
                                         echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
                                         echo "<li><i class='glyphicon glyphicon-book'></i><a href='register'>Register</a></li>";
@@ -99,7 +100,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span class="icon-bar"></span>
                             </button>
                             <div class="navbar-brand logo-nav-left wow fadeInLeft animated" data-wow-delay=".5s">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../">Classic<span>Style</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../bizappmall">Classic<span>Style</span></a></h1>
                             </div>
 
                         </div>
@@ -226,7 +227,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="banner-top">
             <div class="container">
                 <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Single</h2>
-                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../">Home</a><label>/</label>Single</h3>
+                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../bizappmall">Home</a><label>/</label>Single</h3>
                 <div class="clearfix"> </div>
             </div>
         </div>

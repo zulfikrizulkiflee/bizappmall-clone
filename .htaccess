@@ -6,6 +6,8 @@ RewriteEngine on
 RewriteRule ^shop/([a-zA-Z0-9-]+)/?$ shop.php?id=$1&order=$3 [L,QSA]
 RewriteRule ^category/([a-zA-Z0-9-]+)/?$ category.php?code=$1 [L,QSA]
 RewriteRule ^product/([a-zA-Z0-9-]+)/?$ product.php?id=$1 [L,QSA]
+RewriteRule ^search/([a-zA-Z0-9-]+)/?$ search.php?search_param=$1 [L,QSA]
+RewriteRule ^search-shop/([a-zA-Z0-9-]+)/?$ search-shop.php?search_param=$1 [L,QSA]
 
 RewriteRule ^login login.php [L,QSA]
 RewriteRule ^register register.php [L,QSA]

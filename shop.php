@@ -70,7 +70,7 @@
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
                         <div class="header-right2">
                             <div class="cart box_1">
-                                <a href="checkout">
+                                <a href="../checkout">
                                     <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span></h3>
                                 </a>
 
@@ -81,11 +81,11 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo "<li><div id='user-drawer'><i class='fa fa-user-circle-o header-icon' aria-hidden='true'></i> ".$_SESSION['username']."</div></li>";
+                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
                                         echo "<li class='pipe'>|</li>";
                                     }else{
-                                        echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='../login'>Login</a></li>";
-                                        echo "<li><i class='glyphicon glyphicon-book'></i><a href='../register'>Register</a></li>";
+                                        echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
+                                        echo "<li><i class='glyphicon glyphicon-book'></i><a href='register'>Register</a></li>";
                                     }
                                 ?>
                             </ul>
@@ -102,7 +102,7 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../bizappmall"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">
@@ -122,21 +122,19 @@
 
         <div class="container">
             <div class="col-xs-12 col-md-12 shop-profile product-grid-shadow">
-                <div class="shop-info-right">
-                    <ul>
-                        <li><img class="shop_logo" src="../myimages/not_available.gif"></li>
-                        <li><span class="shop_name">NAMA</span><span class="share_shop"><a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true" style="font-size:2em !important;color:#3B5998"></i></a></span></li>
-                    </ul>
+                <div class="col-xs-12 col-md-5 shop-info-right">
+                    <div class="col-xs-3 col-md-3"><img class="shop_logo" src="../myimages/not_available.gif"></div>
+                    <div class="col-xs-9 col-md-9" style="height:100px"><span class="shop_name">NAMA</span><span class="share_shop"><a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true" style="font-size:2em !important;color:#3B5998"></i></a></span></div>
                 </div>
-                <div class="shop-info-left">
-                    <ul>
-                        <li><i class="fa fa-gift" aria-hidden="true"></i><span class="shop_products">Products 0</span>
-                        </li>
-                        <li><i class="fa fa-heart-o" aria-hidden="true"></i><span class="shop_like">Like 0</span></li>
-                        <li><i class="fa fa-clock-o" aria-hidden="true"></i><span class="shop_response">Response Within Hours</span></li>
-                        <li><span class="shop_rating"><i class="fa fa-star" aria-hidden="true"></i></span>Rating</li>
-                        <li><i class="fa fa-user-plus" aria-hidden="true"></i><span class="shop_joined">June 2016</span></li>
-                    </ul>
+                <div class="col-xs-12 col-md-7 shop-info-left">
+
+                    <div class="col-xs-6 col-md-4"><i class="fa fa-gift" aria-hidden="true"></i><span class="shop_products">Products 0</span>
+                    </div>
+                    <div class="col-xs-6 col-md-4"><i class="fa fa-heart-o" aria-hidden="true"></i><span class="shop_divke">Like 0</span></div>
+                    <div class="col-xs-6 col-md-4"><i class="fa fa-clock-o" aria-hidden="true"></i><span class="shop_response">Response Within Hours</span></div>
+                    <div class="col-xs-6 col-md-4"><span class="shop_rating"><i class="fa fa-star" aria-hidden="true"></i></span>Rating</div>
+                    <div class="col-xs-6 col-md-4"><i class="fa fa-user-plus" aria-hidden="true"></i><span class="shop_joined">June 2016</span></div>
+
                 </div>
             </div>
         </div>
@@ -193,16 +191,16 @@
                     <a class="bizapp-sort-by-options__option" data-option="latest" href="javascript:void(0)">LATEST</a>
                     <a class="bizapp-sort-by-options__option" data-option="top" href="javascript:void(0)">TOP</a>
                     <div class="bizapp-sort-by-options__option price-key" style="position: relative;">
-                        <span class="price-selection">PRICE</span> <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        <span class="price-selection">PRICE</span>
                         <div class="bizapp-dropdown-popover" style="visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2">
                             <ul style="width:100%">
-                                <li class="dropdown-price price-low-high" data-option="lowhigh">PRICE : LOW TO HIGH</li>
-                                <li class="dropdown-price price-high-low" data-option="highlow">PRICE : HIGH TO LOW</li>
+                                <li class="dropdown-price price-low-high" data-option="lowhigh">PRICE : LOW TO HIGH <i class="fa fa-sort-amount-asc" aria-hidden="true"></i></li>
+                                <li class="dropdown-price price-high-low" data-option="highlow">PRICE : HIGH TO LOW <i class="fa fa-sort-amount-desc" aria-hidden="true"></i></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <ul class="shop-product-list"></ul>
+                <div class="row shop-product-list"></div>
             </div>
         </div>
 

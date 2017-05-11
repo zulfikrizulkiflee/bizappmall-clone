@@ -81,7 +81,7 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo "<li><div id='user-drawer'><i class='fa fa-user-circle-o header-icon' aria-hidden='true'></i> ".$_SESSION['username']."</div></li>";
+                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
                                         echo "<li class='pipe'>|</li>";
                                     }else{
                                         echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
@@ -164,22 +164,17 @@
 
         <!--categories-->
         <div class="container">
-            <div class="col-md-12 categories">
-                <!--                <h4>CATEGORIES</h4>-->
-                <ul class="category-list">
-                </ul>
+            <div class="col-xs-12 col-md-12 categories">
+
             </div>
         </div>
 
         <!--top products-->
         <div class="container">
-            <div class="col-md-12 top-products">
-                <hr>
-                <h4>TOP PRODUCTS</h4>
-                <hr style="border-top: 3px solid #f57400;">
-                <ul class="top-product-list">
-                </ul>
-
+            <hr>
+            <h4>TOP PRODUCTS</h4>
+            <hr style="border-top: 3px solid #f57400;">
+            <div class="row top-products">
             </div>
         </div>
 
@@ -189,8 +184,8 @@
                 <hr>
                 <h4 style="padding-right:1%;">LATEST PRODUCTS<span class="view-more"><a href="discover">View all <i class="fa fa-chevron-right" aria-hidden="true"></i></a></span></h4>
                 <hr style="border-top: 3px solid #f57400;">
-                <ul class="discover-list">
-                </ul>
+                <div class="row discover-list">
+                </div>
             </div>
 
             <a href="discover">

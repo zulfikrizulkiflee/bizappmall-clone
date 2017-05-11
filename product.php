@@ -70,7 +70,7 @@
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
                         <div class="header-right2">
                             <div class="cart box_1">
-                                <a href="checkout">
+                                <a href="../checkout">
                                     <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span></h3>
                                 </a>
 
@@ -81,11 +81,11 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo "<li><div id='user-drawer'><i class='fa fa-user-circle-o header-icon' aria-hidden='true'></i> ".$_SESSION['username']."</div></li>";
+                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
                                         echo "<li class='pipe'>|</li>";
                                     }else{
-                                        echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='../login'>Login</a></li>";
-                                        echo "<li><i class='glyphicon glyphicon-book'></i><a href='../register'>Register</a></li>";
+                                        echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
+                                        echo "<li><i class='glyphicon glyphicon-book'></i><a href='register'>Register</a></li>";
                                     }
                                 ?>
                             </ul>
@@ -102,7 +102,7 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href=".."><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">
@@ -135,8 +135,18 @@
                         </div>
                         <div class="product-image-view"><img src="" class="item_image"></div>
                     </div>
-
+                    <div class="col-xs-12 col-md-12 suggest-products-container">
+                        <h4 style="color:#333;border-bottom:1px solid lightgray;padding-bottom:0.4em;margin-bottom:0.5em;">Comments <span class="comment-number">(0)</span></h4>
+                        <ul class="product-comment-rating"></ul>
+                        <div class="input-group">
+                            <textarea class="form-control comment-area" rows="3"></textarea>
+                            <span class="input-group-btn">
+                    <button class="btn btn-default search-btn" type="button" style="width:5em;height:5.3em"><i class="fa fa-paper-plane" aria-hidden="true" style="font-size:2em"></i></button>
+                    </span>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="col-xs-12 col-md-8 product-info-container">
                     <div class="info-top">
                         <ul class="product-info-top-list">
@@ -145,34 +155,28 @@
                             <li style="margin-bottom:0.5em"><span class="item_pname"></span></span>
                                 </span>
                             </li>
-                            <li class="product-tag-container" style="margin-bottom:0.5em"><span class="product-tag label label-default">#category</span><span class="product-tag label label-default">#brand</span></li>
+                            <li class="product-tag-container" style="margin-bottom:0.5em"></li>
                         </ul>
                     </div>
                     <div class="info-middle">
                         <ul class="product-info-top-list">
-                            <li><pre class="item_detail"></pre></li>
+                            <li><pre class="item_detail">No detail available</pre></li>
                         </ul>
                     </div>
                     <div class="info-bottom">
                         <ul class="product-info-top-list">
-                            <li><span class="item_price" style="color:#f57400;font-size:2em;font-weight:bold;line-height:2em"></span><span style="float:right;padding-top: 0.65em;"><button style="font-size: 1.5em;background: #f57400;color: #fff;border: none;padding: 0.2em 0.4em;">Add To Cart</button></span></li>
+                            <li><span class="item_price" style="color:#f57400;font-size:2em;font-weight:bold;line-height:2em"></span><span style="float:right;padding-top: 0.65em;"><span class="item_pid"></span><span class="item_prodid"></span>
+                                <button class="item_add" style="font-size: 1.5em;background: #f57400;color: #fff;border: none;padding: 0.2em 0.4em;">Add To Cart</button>
+                                </span>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-md-12 suggest-products-container">
-                <h4 style="color:#333;border-bottom:1px solid lightgray;padding-bottom:0.4em;margin-bottom:0.5em;">Comments <span class="comment-number">(0)</span></h4>
-                <ul class="product-comment-rating"></ul>
-                <div class="input-group">
-                    <textarea class="form-control comment-area" rows="3"></textarea>
-                    <span class="input-group-btn">
-                    <button class="btn btn-default search-btn" type="button" style="width:5em;height:5.3em"><i class="fa fa-paper-plane" aria-hidden="true" style="font-size:2em"></i></button>
-                    </span>
-                </div>
-            </div>
+
             <div class="col-xs-12 col-md-12 suggest-products-container">
                 <h4 style="color:#333;border-bottom:1px solid lightgray;padding-bottom:0.4em;margin-bottom:0.5em;">See Also</h4>
-                <ul class="suggest-product-list"></ul>
+                <div class="row suggest-product-list"></div>
             </div>
         </div>
 
@@ -203,12 +207,17 @@
             </div>
         </div>
         <!-- //footer -->
-        <div id='user-drawer-content' class="">
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button'>My purchase</div>
-            </div>
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button' class="logout-btn">Logout</div>
+        <!-- Static Modal -->
+        <div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="../myimages/ico/cart-added.png" style="height:80px;margin-top:25px;margin-bottom:25px" class="icon" />
+                            <h4>Item Added To Cart</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--custom js-->
