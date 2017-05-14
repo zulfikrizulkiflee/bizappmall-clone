@@ -11,14 +11,10 @@
 ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~*/
 /*jslint browser: true, unparam: true, white: true, nomen: true, regexp: true, maxerr: 50, indent: 4 */
 
+var appname = $(location).attr('hostname');
+
 (function (window, document) {
     /*global HTMLElement */
-
-    var sellerArr = [];
-    var rowArr = [];
-
-    var appname = $(location).attr('hostname');
-
     var typeof_string = typeof "",
         typeof_undefined = typeof undefined,
         typeof_function = typeof
@@ -87,7 +83,7 @@
                     "MYR": {
                         code: "MYR",
                         symbol: "RM",
-                        name: "Ringgit Malaysia"
+                        name: "Malaysian Ringgit"
                     },
                     "USD": {
                         code: "USD",
@@ -209,45 +205,49 @@
                     currency: "MYR",
                     language: "english-us",
 
-                    cartStyle: "div",
+                    cartStyle: "table",
                     cartColumns: [
+//                        {
+//                            view: "image",
+//                            attr: "image",
+//                            label: false
+//                        },
                         {
-                            attr: "checkbox",
-                            label: false,
-                            view: "checkbox",
-                        },
-                        {
-                            attr: "image",
-                            label: "Image",
-                            view: "image",
-                        },
-                        {
+                            view: "name",
                             attr: "name",
-                            label: "Name"
+                            label: "Item"
                         },
                         {
                             attr: "price",
                             label: "Price",
                             view: 'currency'
                         },
+//                        {
+//                            view: "decrement",
+//                            label: false
+//                        },
                         {
+                            view: "quantity",
                             attr: "quantity",
-                            label: "Qty",
-                            view: "quantity"
+                            label: "Qty"
                         },
+//                        {
+//                            view: "increment",
+//                            label: false
+//                        },
                         {
                             attr: "total",
-                            label: "SubTotal",
+                            label: "Total",
                             view: 'currency'
                         },
-                        {
-                            view: "remove",
-                            text: "Remove",
-                            label: false
-                        }
+//                        {
+//                            view: "remove",
+//                            text: "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>",
+//                            label: false
+//                        }
 					],
 
-                    excludeFromCheckout: ['thumb'],
+                    excludeFromCheckout: ['image'],
 
                     shippingFlatRate: 0,
                     shippingQuantityRate: 0,
@@ -716,40 +716,44 @@
                     return item.get(column.attr) || "";
                 },
 
+                name: function (item, column) {
+                    return '<a href="' + item.get("link") + '" class="at-in" data-prodid="' + item.get("prodid") + '" data-pid=' + item.get("pid") + '> <img src="' + item.get("image") + '" class="img-responsive cart-img" alt=""> </a> <div class="sed"> <h5>' + item.get(column.attr) + '</h5> </div> <div class="clearfix"> </div> <div class="close1 ' + namespace + '_remove"> </div>';
+                    //                    return "<a href='" + item.get("link") + "'>" + item.get(column.attr) + "</a>";
+                },
                 currency: function (item, column) {
                     return simpleCart.toCurrency(item.get(column.attr) || 0);
                 },
 
-                link: function (item, column) {
-                    return "<a href='" + item.get(column.attr) + "'>" + column.text + "</a>";
-                },
-
-                decrement: function (item, column) {
-                    return "<a href='javascript:;' class='" + namespace + "_decrement'>" + (column.text || "-") + "</a>";
-                },
-
-                increment: function (item, column) {
-                    return "<a href='javascript:;' class='" + namespace + "_increment'>" + (column.text || "+") + "</a>";
-                },
-
-                checkbox: function (item, column) {
-                    return "<input type='checkbox' data-prodid='" + item.get('prodid') + "'>";
-                },
-
-                image: function (item, column) {
-                    return "<a href='product/" + item.get('prodid') + "' target='_parent'><span class='hold-pid' style='display:none'>" + item.get('pid') + "</span><img src='" + item.get(column.attr) + "'/></a>";
-                },
+                //                link: function (item, column) {
+                //                    return "<a href='" + item.get(column.attr) + "'>" + column.text + "</a>";
+                //                },
                 quantity: function (item, column) {
                     return '<div class="quantity"> <div class="quantity-select"> <div class="entry value-minus ' + namespace + '_decrement">&nbsp;</div> <div class="entry value"><span class="span-1">' + item.get("quantity") + '</span></div> <div class="entry value-plus active ' + namespace + '_increment">&nbsp;</div> </div> </div>';
+                },
+
+                //                decrement: function (item, column) {
+                //                    //                    return "<div class='quantity-select'><div class='entry value-minus " + namespace + "_decrement'>&nbsp;</div></div>";
+                //                    return "<a href='javascript:;' class='" + namespace + "_decrement'>" + (column.text || "<span class='glyphicon glyphicon-minus' aria-hidden='true'></span>") + "</a>";
+                //                },
+                //
+                //                increment: function (item, column) {
+                //                    //                    return "<div class='quantity-select'><div class='entry value-plus " + namespace + "_increment'>&nbsp;</div></div>";
+                //                    return "<a href='javascript:;' class='" + namespace + "_increment'>" + (column.text || "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>") + "</a>";
+                //                },
+
+                image: function (item, column) {
+                    return "<img src='" + item.get(column.attr) + "' class='cart-img'/>";
                 },
 
                 input: function (item, column) {
                     return "<input type='text' value='" + item.get(column.attr) + "' class='" + namespace + "_input'/>";
                 },
 
-                remove: function (item, column) {
-                    return "<a href='javascript:;' class='" + namespace + "_remove'><span class='glyphicon glyphicon-remove-sign' aria-hidden='true'></span></a>";
-                }
+
+
+                //                remove: function (item, column) {
+                //                    return "<a href='javascript:;' class='" + namespace + "_remove'>" + (column.text || "X") + "</a>";
+                //                }
             };
 
             // cart column wrapper class and functions
@@ -778,16 +782,15 @@
                 writeCart: function (selector) {
                     var TABLE = settings.cartStyle.toLowerCase(),
                         isTable = TABLE === 'table',
-                        SHOP = isTable ? "tr" : "div",
                         TR = isTable ? "tr" : "div",
                         TH = isTable ? 'th' : 'div',
                         TD = isTable ? 'td' : 'div',
                         THEAD = isTable ? 'thead' : 'div',
-                        cart_container = simpleCart.$create(TABLE),
+                        cart_container = simpleCart.$create(TABLE).addClass('table'),
+                        //                        .addClass('table animated wow fadeInLeft').attr('data-wow-delay', '.5s'),
                         thead_container = simpleCart.$create(THEAD),
-                        header_container = simpleCart.$create(TR).addClass('headerRow'),
+                        header_container = simpleCart.$create(TR),
                         container = simpleCart.$(selector),
-                        shop_container = simpleCart.$create(SHOP),
                         column,
                         klass,
                         label,
@@ -809,7 +812,8 @@
 
                         // append the header cell
                         header_container.append(
-                            simpleCart.$create(TH).addClass(klass).html(label)
+                            simpleCart.$create(TH).addClass(klass).html(label).addClass('t-head')
+                            //                            .attr('style', 'text-align:center')
                         );
                     }
 
@@ -824,7 +828,7 @@
                 // generate a cart row from an item
                 createCartRow: function (item, y, TR, TD, container) {
                     var row = simpleCart.$create(TR)
-                        .addClass('shop_' + item.get('pid') + ' itemRow row-' + y + " " + (y % 2 ? "even" : "odd"))
+                        .addClass('itemRow row-' + y + " " + (y % 2 ? "even" : "odd"))
                         .attr('id', "cartItem_" + item.id()),
                         j,
                         jlen,
@@ -833,18 +837,18 @@
                         content,
                         cell;
 
-
                     container.append(row);
-
-
-
 
                     // cycle through the columns to create each cell for the item
                     for (j = 0, jlen = settings.cartColumns.length; j < jlen; j += 1) {
                         column = cartColumn(settings.cartColumns[j]);
                         klass = "item-" + (column.attr || (isString(column.view) ? column.view : column.label || column.text || "cell")) + " " + column.className;
                         content = cartCellView(item, column);
-                        cell = simpleCart.$create(TD).addClass(klass).html(content);
+                        if (j == 0) {
+                            cell = simpleCart.$create(TD).addClass(klass).html(content).addClass('t-data ring-in');
+                        } else {
+                            cell = simpleCart.$create(TD).addClass(klass).html(content).addClass('t-data ');
+                        }
 
                         row.append(cell);
                     }
@@ -984,13 +988,15 @@
                     return this.increment(-parseInt(diff, 10));
                 },
                 remove: function (skipUpdate) {
-                    var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
+                    var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
 
-                    function getParam(param) {
-                        var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-                        return results[1] || 0;
+                    function getParam() {
+                        var results = window.location.href.split("/");
+                        console.log(results);
+                        results = results[(results.length - 1)];
+                        return results;
                     }
-                    var pid = getParam("id");
+                    var pid = getParam();
                     var count_item = 0;
                     $.each(cart_obj, function (i, dataCartItem) {
                         if (dataCartItem.pid == pid) {
@@ -1016,7 +1022,10 @@
                         });
 
                         if (count_item == 0) {
-                            window.open('checkout', '_parent');
+                            $('#pro_payment').css('display', 'none');
+                            $('.simpleCart_items').css('display', 'none');
+                            var button_str = '<a href="shop-list.html">Back to shoplist</a>';
+                            $('.cart-total').append(button_str);
                         }
                     }
                     return null;
@@ -1894,7 +1903,6 @@
                     },
                     items: function (selector) {
                         simpleCart.writeCart(selector);
-                        simpleCart.trigger("beforeCreate");
                         simpleCart.trigger("afterCreate");
                     },
                     tax: function () {
@@ -1910,84 +1918,12 @@
                         return simpleCart.toCurrency(simpleCart.grandTotal());
                     }
                 });
-
-                simpleCart.bind("beforeCreate", function () {
-                    displayShopOnly();
-
-                    function displayShopOnly() {
-                        function getParam(param) {
-                            var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-                            if (results != null) {
-                                return results[1] || 0;
-                            }
-
-                        }
-                        var pid = getParam("id");
-                        var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
-                        $.each(cart_obj, function (i, dataCartItem) {
-                            if (dataCartItem.pid != pid) {
-                                var selectt = '#cartItem_' + dataCartItem.id;
-                                $(selectt).remove();
-                            }
-                        });
-                    }
-                });
-
                 simpleCart.bind("afterCreate", function () {
-                    $('.itemRow').addClass('col-xs-12 col-md-12');
-                    $('.item-checkbox').addClass('col-xs-1 col-sm-1 col-md-1');
-                    $('.item-image').addClass('col-xs-4 col-sm-2 col-md-2');
-                    $('.item-name').addClass('col-xs-6 col-sm-4 col-md-2 ellipsis');
-                    $('.item-quantity').addClass('col-xs-6 col-sm-3 col-md-3');
-                    $('.item-price').addClass('col-xs-6 col-sm-2 col-md-1');
-                    $('.item-total').addClass('col-xs-5 col-sm-8 col-md-1');
-                    $('.item-remove').addClass('col-xs-1 col-sm-1 col-md-2');
-
-                    var checkArr = [];
-                    var limit = 10;
-                    var count = 0;
-                    $("input:checkbox").each(function () {
-                        if (count < limit) {
-                            $(this).prop('checked', true);
-                            checkArr.push($(this).attr('data-prodid'));
-                            localStorage.setItem(appname + namespace + '_checkArr', checkArr);
-                            generateCartTotal();
-                        }
-                        count++;
-                    });
-
-
-                    $('input:checkbox').on('change', function (evt) {
-                        var index = checkArr.indexOf($(this).attr('data-prodid'));
-                        if (index >= 0) {
-                            checkArr.splice(index, 1);
-                            localStorage.setItem(appname + namespace + '_checkArr', checkArr);
-                            console.log(checkArr);
-                            generateCartTotal();
-                        } else {
-                            if (checkArr.length >= limit) {
-                                this.checked = false;
-                            } else {
-                                checkArr.push($(this).attr('data-prodid'));
-                                localStorage.setItem(appname + namespace + '_checkArr', checkArr);
-                                console.log(checkArr);
-                                generateCartTotal();
-                            }
-                        }
-                    });
-
-                    function generateCartTotal() {
-                        var total_price = 0;
-                        var checkArr = localStorage.getItem(appname + namespace + '_checkArr').split(',');
-                        var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
-                        console.log(cart_obj);
-                        $.each(cart_obj, function (i, dataCart) {
-                            if (checkArr.indexOf(dataCart.prodid) >= 0) {
-                                total_price = total_price + (parseFloat(dataCart.price) * dataCart.quantity);
-                            }
-                        });
-                        $('.simpleCart_total_custom').html('RM' + parseFloat(total_price).toFixed(2));
-                    }
+                    //                    $('.item-total').append('<div class="close1 ' + namespace + '_remove"> </div>');
+                    //                    $(".simpleCart_items table tbody .item-quantity").addClass('quantity-select');
+                    //                    $(".simpleCart_items table tbody .item-quantity").prepend('<div class="entry value-minus simpleCart_decrement">&nbsp;</div></div> ');
+                    //                    $(".simpleCart_items table tbody .item-quantity").append('&nbsp;&nbsp;<div class="entry value-plus simpleCart_increment">&nbsp;</div></div>');
+                    //                    $(".simpleCart_items table").css('text-align', 'center');
                 });
 
                 simpleCart.bindInputs([
@@ -2015,12 +1951,13 @@
                             displayShopOnly();
 
                             function displayShopOnly() {
-                                function getParam(param) {
-                                    var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-                                    return results[1] || 0;
+                                function getParam() {
+                                    var results = window.location.href.split("/");
+                                    results = results[(results.length - 1)];
+                                    return results;
                                 }
-                                var pid = getParam("id");
-                                var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
+                                var pid = getParam();
+                                var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
                                 $.each(cart_obj, function (i, dataCartItem) {
                                     console.log("cartItem_" + dataCartItem.id + "||" + dataCartItem.pid);
                                     if (dataCartItem.pid != pid) {
@@ -2034,17 +1971,17 @@
 
                             function generateCartTotal() {
                                 var total_price = 0;
-                                var checkArr = localStorage.getItem(appname + namespace + '_checkArr').split(',');
 
-                                function getParam(param) {
-                                    var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-                                    return results[1] || 0;
+                                function getParam() {
+                                    var results = window.location.href.split("/");
+                                    results = results[(results.length - 1)];
+                                    return results;
                                 }
-                                var pid = getParam("id");
-                                var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
+                                var pid = getParam();
+                                var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
                                 console.log(cart_obj);
                                 $.each(cart_obj, function (i, dataCart) {
-                                    if (checkArr.indexOf(dataCart.prodid) >= 0) {
+                                    if (dataCart.pid == pid) {
                                         total_price = total_price + (parseFloat(dataCart.price) * dataCart.quantity);
                                     }
                                 });
@@ -2062,12 +1999,13 @@
                             displayShopOnly();
 
                             function displayShopOnly() {
-                                function getParam(param) {
-                                    var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-                                    return results[1] || 0;
+                                function getParam() {
+                                    var results = window.location.href.split("/");
+                                    results = results[(results.length - 1)];
+                                    return results;
                                 }
-                                var pid = getParam("id");
-                                var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
+                                var pid = getParam();
+                                var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
                                 $.each(cart_obj, function (i, dataCartItem) {
                                     console.log("cartItem_" + dataCartItem.id + "||" + dataCartItem.pid);
                                     if (dataCartItem.pid != pid) {
@@ -2082,12 +2020,12 @@
                             function generateCartTotal() {
                                 var total_price = 0;
 
-                                function getParam(param) {
+                                function getParam() {
                                     var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
                                     return results[1] || 0;
                                 }
-                                var pid = getParam("id");
-                                var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
+                                var pid = getParam();
+                                var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
                                 console.log(cart_obj);
                                 $.each(cart_obj, function (i, dataCart) {
                                     if (dataCart.pid == pid) {
@@ -2110,12 +2048,13 @@
                             function generateCartTotal() {
                                 var total_price = 0;
 
-                                function getParam(param) {
-                                    var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-                                    return results[1] || 0;
+                                function getParam() {
+                                    var results = window.location.href.split("/");
+                                    results = results[(results.length - 1)];
+                                    return results;
                                 }
-                                var pid = getParam("id");
-                                var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
+                                var pid = getParam();
+                                var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
                                 console.log(cart_obj);
                                 $.each(cart_obj, function (i, dataCart) {
                                     if (dataCart.pid == pid) {
@@ -2197,8 +2136,7 @@
                                 }
                             });
 
-                            // add the item
-                            var cart_obj = JSON.parse(localStorage.getItem(appname + namespace + '_items'));
+                            var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
                             console.log(cart_obj);
                             var item_id = fields.pid;
                             var count = 0;
@@ -2208,17 +2146,16 @@
                                     count++;
                                 }
                             });
-                            simpleCart.add(fields);
-                            //                            if (count < 10) {
-                            //                                // add the item
-                            //                                simpleCart.add(fields);
-                            //                            } else {
-                            //                                alert("Max item reached for this shop");
-                            //                            }
+
+                            if (count < 10) {
+                                // add the item
+                                simpleCart.add(fields);
+                            } else {
+                                alert("Max item reached for this shop");
+                            }
                         }
 					}
 				]);
-
             });
 
 
@@ -2312,7 +2249,6 @@
 
 
     window.simpleCart = generateSimpleCart();
-
 }(window, document));
 
 /************ JSON *************/

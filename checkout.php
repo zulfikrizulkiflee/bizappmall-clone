@@ -5,12 +5,12 @@
     <html>
 
     <head>
-        <title>Classic Style a Ecommerce Online Shopping Category Flat Bootstrap Responsive Website Template | Checkout :: w3layouts</title>
+        <link rel="shortcut icon" href="myimages/ico/favicon.png">
+        <title>BizApp-Mall | Buy Your Favourite Products From Online Shop Owners</title>
         <!-- for-mobile-apps -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="Classic Style Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+        <meta name="keywords" content="Buy Your Favourite Products From Online Shop Owners" />
         <script type="application/x-javascript">
             addEventListener("load", function () {
                 setTimeout(hideURLbar, 0);
@@ -29,18 +29,41 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <!-- cart -->
         <script src="js/simpleCart.min.js"></script>
         <!-- cart -->
+        <!--pace-->
+        <script src="js/pace.min.js"></script>
+        <!--pagination-->
+        <script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
+        <!--lazy load-->
+        <script src="js/jquery.lazyload.js" type="text/javascript"></script>
+        <!--pagination-->
         <!-- for bootstrap working -->
         <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
         <!-- //for bootstrap working -->
         <!-- animation-effect -->
+        <!--
         <link href="css/animate.min.css" rel="stylesheet">
         <script src="js/wow.min.js"></script>
+-->
         <script>
             new WOW().init();
         </script>
         <!-- //animation-effect -->
         <link href='//fonts.googleapis.com/css?family=Cabin:400,500,600,700' rel='stylesheet' type='text/css'>
         <link href='//fonts.googleapis.com/css?family=Lato:400,100,300,700,900' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <style>
+            .headerRow {
+                display: none !important;
+            }
+            
+            .cart-frame {
+                display: block;
+                border: none;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
     </head>
 
     <body>
@@ -50,13 +73,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="container">
                     <div class="header-left animated wow fadeInLeft" data-wow-delay=".5s">
                         <ul>
-                            <li><i class="glyphicon glyphicon-headphones"></i><a href="#">24x7 live support</a></li>
-                            <li><i class="glyphicon glyphicon-envelope"></i><a href="mailto:info@example.com">@example.com</a></li>
-                            <li><i class="glyphicon glyphicon-earphone"></i>+1234 567 892</li>
-
+                            <li><a href="#"> Help</a></li>
+                            <li>|</li>
+                            <li>Follow us on <a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true"></i></a> <a href="#" target="_blank"><i class="fa fa-instagram header-icon" aria-hidden="true"></i></a></li>
+                            <li>|</li>
+                            <li><a href="http://web.bizapp.my/" target="_blank"><b>Sell</b></a></li>
                         </ul>
                     </div>
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
+                        <div class="header-right2">
+                            <div class="cart box_1">
+                                <a href="checkout">
+                                    <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span></h3>
+                                </a>
+
+                                <div class="clearfix"> </div>
+                            </div>
+                        </div>
                         <div class="header-right1 ">
                             <ul>
                                 <?php
@@ -70,18 +103,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 ?>
                             </ul>
                         </div>
-                        <div class="header-right2">
-                            <div class="cart box_1">
-                                <a href="checkout">
-                                    <h3> <div class="total">
-								<span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)</div>
-								<img src="images/cart.png" alt="" />
-							</h3>
-                                </a>
-                                <p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
+
                         <div class="clearfix"> </div>
                     </div>
                     <div class="clearfix"> </div>
@@ -89,361 +111,58 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="container">
                 <div class="logo-nav">
-
                     <nav class="navbar navbar-default">
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
-                            <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <div class="navbar-brand logo-nav-left wow fadeInLeft animated" data-wow-delay=".5s">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../bizappmall">Classic<span>Style</span></a></h1>
+                            <div class="navbar-brand logo-nav-left ">
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../bizappmall"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
-
-                        </div>
-                        <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
-                            <ul class="nav navbar-nav">
-                                <li><a href="../" class="act">Home</a></li>
-                                <!-- Mega Menu -->
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Women <b class="caret"></b></a>
-                                    <ul class="dropdown-menu multi">
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <ul class="multi-column-dropdown">
-                                                    <h6>Submenu1</h6>
-
-                                                    <li><a href="products">Accessories</a></li>
-                                                    <li><a href="products">Bags</a></li>
-                                                    <li><a href="products">Caps & Hats</a></li>
-                                                    <li><a href="products">Hoodies & Sweatshirts</a></li>
-
-                                                </ul>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <ul class="multi-column-dropdown">
-                                                    <h6>Submenu2</h6>
-                                                    <li><a href="products">Jackets & Coats</a></li>
-                                                    <li><a href="products">Jeans</a></li>
-                                                    <li><a href="products">Jewellery</a></li>
-                                                    <li><a href="products">Jumpers & Cardigans</a></li>
-                                                    <li><a href="products">Leather Jackets</a></li>
-                                                    <li><a href="products">Long Sleeve T-Shirts</a></li>
-
-                                                </ul>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <ul class="multi-column-dropdown">
-                                                    <h6>Submenu3</h6>
-                                                    <li><a href="products">Shirts</a></li>
-                                                    <li><a href="products">Shoes, Boots & Trainers</a></li>
-                                                    <li><a href="products">Sunglasses</a></li>
-                                                    <li><a href="products">Sweatpants</a></li>
-                                                    <li><a href="products">Swimwear</a></li>
-                                                    <li><a href="products">Trousers & Chinos</a></li>
-
-                                                </ul>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="row-top">
-                                            <div class="col-sm-6 row1">
-                                                <a href="products"><img src="images/me.jpg" alt="" class="img-responsive"></a>
-                                            </div>
-                                            <div class=" col-sm-6 row2">
-                                                <a href="products"><img src="images/me1.jpg" alt="" class="img-responsive"></a>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Men <b class="caret"></b></a>
-                                    <ul class="dropdown-menu multi multi1">
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <ul class="multi-column-dropdown">
-                                                    <h6>Submenu1</h6>
-
-                                                    <li><a href="products1.html">Accessories</a></li>
-                                                    <li><a href="products1.html">Bags</a></li>
-                                                    <li><a href="products1.html">Caps & Hats</a></li>
-                                                    <li><a href="products1.html">Hoodies & Sweatshirts</a></li>
-
-                                                </ul>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <ul class="multi-column-dropdown">
-                                                    <h6>Submenu2</h6>
-                                                    <li><a href="products1.html">Jackets & Coats</a></li>
-                                                    <li><a href="products1.html">Jeans</a></li>
-                                                    <li><a href="products1.html">Jewellery</a></li>
-                                                    <li><a href="products1.html">Jumpers & Cardigans</a></li>
-                                                    <li><a href="products1.html">Leather Jackets</a></li>
-                                                    <li><a href="products1.html">Long Sleeve T-Shirts</a></li>
-
-                                                </ul>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <ul class="multi-column-dropdown">
-                                                    <h6>Submenu3</h6>
-                                                    <li><a href="products1.html">Shirts</a></li>
-                                                    <li><a href="products1.html">Shoes, Boots & Trainers</a></li>
-                                                    <li><a href="products1.html">Sunglasses</a></li>
-                                                    <li><a href="products1.html">Sweatpants</a></li>
-                                                    <li><a href="products1.html">Swimwear</a></li>
-                                                    <li><a href="products1.html">Trousers & Chinos</a></li>
-
-                                                </ul>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="row-top">
-                                            <div class="col-sm-6 row1">
-                                                <a href="products1.html"><img src="images/me2.jpg" alt="" class="img-responsive"></a>
-                                            </div>
-                                            <div class=" col-sm-6 row2">
-                                                <a href="products1.html"><img src="images/me3.jpg" alt="" class="img-responsive"></a>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </ul>
-                                </li>
-
-                                <li><a href="codes"> Codes</a></li>
-                                <li><a href="contact">Contact Us</a></li>
-                            </ul>
+                            <div class="col-xs-12 col-md-6 navbar-search">
+                                <div class="input-group">
+                                    <input type="hidden" name="search_param" value="all" id="search_param">
+                                    <input type="text" class="form-control search-input" name="x" placeholder="Search for products or shops..." style="height:45px;">
+                                    <span class="input-group-btn">
+                    <button class="btn btn-default search-btn" type="button" style="height:45px;"><span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </nav>
                 </div>
-
             </div>
         </div>
         <!-- //header -->
-        <!--banner-->
-        <div class="banner-top">
-            <div class="container">
-                <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Checkout</h2>
-                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../bizappmall">Home</a><label>/</label>Checkout</h3>
-                <div class="clearfix"> </div>
-            </div>
+
+        <!-- container -->
+        <div class="container checkout-wrapper" id="accordion" role="tablist" aria-multiselectable="true">
+
+
         </div>
-        <!-- contact -->
-        <div class="check-out">
-            <div class="container">
-
-                <script>
-                    $(document).ready(function (c) {
-                        $('.close1').on('click', function (c) {
-                            $('.cross').fadeOut('slow', function (c) {
-                                $('.cross').remove();
-                            });
-                        });
-                    });
-                </script>
-                <script>
-                    $(document).ready(function (c) {
-                        $('.close2').on('click', function (c) {
-                            $('.cross1').fadeOut('slow', function (c) {
-                                $('.cross1').remove();
-                            });
-                        });
-                    });
-                </script>
-                <script>
-                    $(document).ready(function (c) {
-                        $('.close3').on('click', function (c) {
-                            $('.cross2').fadeOut('slow', function (c) {
-                                $('.cross2').remove();
-                            });
-                        });
-                    });
-                </script>
-                <table class="table animated wow fadeInLeft" data-wow-delay=".5s">
-                    <tr>
-                        <th class="t-head head-it ">Item</th>
-                        <th class="t-head">Price</th>
-                        <th class="t-head">Quantity</th>
-                        <th class="t-head">Total</th>
-                    </tr>
-                    <tr class="cross">
-                        <td class="ring-in t-data">
-                            <a href="single" class="at-in">
-                                <img src="images/pcc.jpg" class="img-responsive" alt="">
-                            </a>
-                            <div class="sed">
-                                <h5>Sed ut perspiciatis unde</h5>
-                            </div>
-                            <div class="clearfix"> </div>
-                            <div class="close1"> </div>
-                        </td>
-                        <td class="t-data">$100.00</td>
-                        <td class="t-data">
-                            <div class="quantity">
-                                <div class="quantity-select">
-                                    <div class="entry value-minus">&nbsp;</div>
-                                    <div class="entry value"><span class="span-1">1</span></div>
-                                    <div class="entry value-plus active">&nbsp;</div>
-                                </div>
-                            </div>
-
-                        </td>
-                        <td class="t-data">$100.00</td>
-
-                    </tr>
-                    <tr class="cross1">
-                        <td class="t-data ring-in">
-                            <a href="single" class="at-in"><img src="images/pcc2.jpg" class="img-responsive" alt=""></a>
-                            <div class="sed">
-                                <h5>Sed ut perspiciatis unde</h5>
-                            </div>
-                            <div class="clearfix"> </div>
-                            <div class="close2"> </div>
-                        </td>
-                        <td class="t-data">$200.00</td>
-                        <td class="t-data">
-                            <div class="quantity">
-                                <div class="quantity-select">
-                                    <div class="entry value-minus">&nbsp;</div>
-                                    <div class="entry value"><span class="span-1">1</span></div>
-                                    <div class="entry value-plus active">&nbsp;</div>
-                                </div>
-                            </div>
-                            <!--quantity-->
-
-                        </td>
-                        <td class="t-data">$200.00</td>
-
-                    </tr>
-                    <tr class="cross2">
-                        <td class="t-data ring-in">
-                            <a href="single" class="at-in"><img src="images/pcc1.jpg" class="img-responsive" alt=""></a>
-                            <div class="sed">
-                                <h5>Sed ut perspiciatis unde</h5>
-                            </div>
-                            <div class="clearfix"> </div>
-                            <div class="close3"> </div>
-                        </td>
-                        <td class="t-data">$150.00</td>
-                        <td class="t-data">
-                            <div class="quantity">
-                                <div class="quantity-select">
-                                    <div class="entry value-minus">&nbsp;</div>
-                                    <div class="entry value"><span class="span-1">1</span></div>
-                                    <div class="entry value-plus active">&nbsp;</div>
-                                </div>
-                            </div>
-
-                        </td>
-                        <td class="t-data">$150.00</td>
-
-                    </tr>
-                </table>
-                <div class=" cart-total">
-
-                    <h5 class="continue">Cart Total</h5>
-                    <div class="price-details">
-                        <h3>Price Details</h3>
-                        <span>Total</span>
-                        <span class="total1">6200.00</span>
-                        <span>Discount</span>
-                        <span class="total1">---</span>
-                        <span>Delivery Charges</span>
-                        <span class="total1">150.00</span>
-                        <div class="clearfix"></div>
-                    </div>
-                    <ul class="total_price">
-                        <li class="last_price">
-                            <h4>TOTAL</h4></li>
-                        <li class="last_price"><span>6350.00</span></li>
-                        <div class="clearfix"> </div>
-                    </ul>
-
-                    <a href="single">Produced By Cart</a>
-
-                </div>
-
-
-            </div>
-        </div>
-        <!--quantity-->
-        <script>
-            $('.value-plus').on('click', function () {
-                var divUpd = $(this).parent().find('.value'),
-                    newVal = parseInt(divUpd.text(), 10) + 1;
-                divUpd.text(newVal);
-            });
-
-            $('.value-minus').on('click', function () {
-                var divUpd = $(this).parent().find('.value'),
-                    newVal = parseInt(divUpd.text(), 10) - 1;
-                if (newVal >= 1) divUpd.text(newVal);
-            });
-        </script>
-        <!--quantity-->
-
-        <div class="social animated wow fadeInUp" data-wow-delay=".1s">
-            <div class="container">
-                <div class="col-sm-3 social-ic">
-                    <a href="#">FACEBOOK</a>
-                </div>
-                <div class="col-sm-3 social-ic">
-                    <a href="#">TWITTER</a>
-                </div>
-                <div class="col-sm-3 social-ic">
-                    <a href="#">GOOGLE+</a>
-                </div>
-                <div class="col-sm-3 social-ic">
-                    <a href="#">PINTEREST</a>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div>
+        <!-- //container -->
 
         <!-- footer -->
         <div class="footer">
             <div class="container">
                 <div class="footer-top">
-                    <div class="col-md-9 footer-top1">
-                        <h4>Duis aute irure dolor in reprehenderit in voluptate </h4>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.Excepteur sint occaecat cupidatat non proident Duis aute irure dolor in reprehenderit in voluptate velit esse</p>
-                    </div>
-                    <div class="col-md-3 footer-top2">
-                        <a href="contact">Contact Us</a>
+                    <div class="col-md-12 footer-top1">
+                        <h4>Want to be apart of our ever growing family?</h4>
+                        <p>We have more than 20 thousands of registered shops and you are welcome to join us to discover new platform to sell your products. Please don't hesitate, we are ready to guide you.</p>
                     </div>
                     <div class="clearfix"> </div>
                 </div>
                 <div class="footer-grids">
-                    <div class="col-md-4 footer-grid animated wow fadeInLeft" data-wow-delay=".5s">
-                        <h3>About Us</h3>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.<span>Excepteur sint occaecat cupidatat 
-						non proident, sunt in culpa qui officia deserunt mollit.</span></p>
-                    </div>
-                    <div class="col-md-4 footer-grid animated wow fadeInLeft" data-wow-delay=".6s">
-                        <h3>Contact Info</h3>
-                        <ul>
-                            <li><i class="glyphicon glyphicon-map-marker"></i>1234k Avenue, 4th block, <span>New York City.</span></li>
-                            <li class="foot-mid"><i class="glyphicon glyphicon-envelope"></i><a href="mailto:info@example.com">info@example.com</a></li>
-                            <li><i class="glyphicon glyphicon-earphone"></i>+1234 567 567</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4 footer-grid animated wow fadeInLeft" data-wow-delay=".7s">
-                        <h3>Sign up for newsletter </h3>
-                        <form>
-                            <input type="text" placeholder="Email" required="">
-                            <input type="submit" value="Submit">
-                        </form>
+                    <div class="col-md-6 footer-grid animated wow fadeInLeft" data-wow-delay=".5s">
+                        <h3>Categories</h3>
+                        <div class="footer-category-list">
 
+                        </div>
                     </div>
 
                     <div class="clearfix"> </div>
                 </div>
 
                 <div class="copy-right animated wow fadeInUp" data-wow-delay=".5s">
-                    <p>&copy 2016 Classic Style. All rights reserved | Design by <a href="http://w3layouts.com/">W3layouts</a></p>
+                    <p>&copy 2017 BizApp Mall. All rights reserved | Design by <a href="http://www.ansi.com.my/">ANSI Systems Sdn Bhd</a></p>
                 </div>
             </div>
         </div>

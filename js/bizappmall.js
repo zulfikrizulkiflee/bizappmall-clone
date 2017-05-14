@@ -2,7 +2,7 @@ console.log("loaded: bizappmall.js");
 
 var link_product = "http://corrad.visionice.net/bizapp/upload/product/";
 var link_shop = "http://corrad.visionice.net/bizapp/upload/profile/";
-var unavailable = "../myimages/not_available.gif";
+var unavailable = "myimages/not_available.gif";
 
 $(function () {
     $("img.item_image").lazyload({
@@ -14,11 +14,19 @@ var appname = $(location).attr('hostname');
 
 var page = $(location).attr('pathname');
 page = page.split('/');
-var home = '/' + page[1] + '/' + page[2];
+if (appname == "localhost") {
+    var home = '/' + page[1] + '/' + page[2];
+} else {
+    var home = '/' + page[1];
+}
+
 var logout = home + '/logout.php';
 console.log(logout);
 page = page[(page.length - 1)];
 console.log(page);
+
+$('a[href="login"]').attr('href', home + '/login');
+$('a[href="register"]').attr('href', home + '/register');
 
 $('.logo-nav-left a').attr('href', home);
 
@@ -394,7 +402,7 @@ if (page_name === "product") {
                     $('.shop-logo').attr('src', shop_img);
                     if ($('.shop-logo').attr('src') == link_shop) {
                         console.log(unavailable);
-                        $('.shop-logo').attr('src', unavailable);
+                        $('.shop-logo').attr('src', '../' + unavailable);
                     }
                 }
             });
@@ -435,7 +443,7 @@ if (page_name === "product") {
             clearTimeout(myModal.data('hideInterval'));
             myModal.data('hideInterval', setTimeout(function () {
                 myModal.modal('hide');
-            }, 3000));
+            }, 1000));
         });
     });
 
@@ -503,7 +511,7 @@ if (page_name === "shop") {
             if ($('.shop_logo').attr('src') == link_shop) {
                 $('.shop_logo').attr('src', shop_img);
                 if ($('.shop_logo').attr('src') == link_shop) {
-                    $('.shop_logo').attr('src', unavailable);
+                    $('.shop_logo').attr('src', '../' + unavailable);
                 }
             }
         });
@@ -544,6 +552,290 @@ if (page_name === "shop") {
     }
 }
 
+if (page === "checkout") {
+    var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
+    var shopArr = [];
+    var prodArr = [];
+
+    $.each(cart_obj, function (i, data) {
+        if (shopArr.indexOf(data.pid) < 0) {
+            shopArr.push(data.pid);
+        }
+        prodArr.push(data.pid);
+    });
+    //    console.log(prodArr);
+    $.each(shopArr, function (i, data) {
+        var shop_name = '';
+        var shop_image = '';
+        var item_quantity = 0;
+        var total_payable = '';
+
+
+        $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + data + '&order=shop_detail', function (dataShop) {
+            console.log(dataShop[0].nama);
+            var shop_img = link_shop + dataShop[0].attachmentphoto;
+            var shop_logo = link_shop + dataShop[0].attachmentlogo;
+
+            if (shop_logo != link_shop) {
+                shop_image = shop_logo;
+            } else if (shop_img != link_shop) {
+                shop_image = shop_img;
+            } else {
+                shop_image = unavailable;
+            }
+
+            shop_name = dataShop[0].nama;
+            var shop_container = '';
+            if (i == 0) {
+                shop_container = '<a class="shop-btn" data-pid="' + dataShop[0].pid + '" role="button" data-toggle="collapse" data-parent="#accordion" href="#shop_' + dataShop[0].pid + '" aria-expanded="true" aria-controls="shop_' + dataShop[0].pid + '"><div class="panel panel-default"> <div class="panel-heading" role="tab" id="shopHead_' + dataShop[0].pid + '"> <h4 class="panel-title"><img class="shop-logo" src="' + shop_image + '" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + shop_name + '<a href="shop/' + dataShop[0].pid + '" class="view-shop" target="_self">View Shop</a></h4> </div> <div id="shop_' + dataShop[0].pid + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shopHead_' + dataShop[0].pid + '"></a> <div class="shopPanel_' + dataShop[0].pid + ' panel-body"> <iframe class="cart-frame shopFrame_' + dataShop[0].pid + '" src="cart-frame.html?id=' + dataShop[0].pid + '"></iframe> </div> </div> </div>';
+            } else {
+                shop_container = '<a class="shop-btn" data-pid="' + dataShop[0].pid + '" role="button" data-toggle="collapse" data-parent="#accordion" href="#shop_' + dataShop[0].pid + '" aria-expanded="true" aria-controls="shop_' + dataShop[0].pid + '"><div class="panel panel-default"> <div class="panel-heading" role="tab" id="shopHead_' + dataShop[0].pid + '"> <h4 class="panel-title"><img class="shop-logo" src="' + shop_image + '" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + shop_name + '<a href="shop/' + dataShop[0].pid + '" class="view-shop" target="_self">View Shop</a></h4> </div> <div id="shop_' + dataShop[0].pid + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shopHead_' + dataShop[0].pid + '"></a> <div class="shopPanel_' + dataShop[0].pid + ' panel-body"> <iframe class="cart-frame shopFrame_' + dataShop[0].pid + '" src="cart-frame.html?id=' + dataShop[0].pid + '"></iframe> </div> </div> </div>';
+            }
+
+            $('.checkout-wrapper').append(shop_container);
+
+            //            var selectCont = '.shopPanel_' + dataShop[0].pid;
+            //            var selectFrame = '.shopFrame_' + dataShop[0].pid;
+            //
+            //            var height = 0;
+            //            setTimeout(function () {
+            //                height = $(selectFrame).contents().find('html').height();
+            //                console.log(height); // wait and you'll have it
+            //                $(selectCont).attr('style', 'height:' + height + 'px');
+            //                removeIn();
+            //            }, 1200);
+            //
+            //            function removeIn() {
+            //                $('.panel:not(:first-child)').find('.panel-collapse').removeClass("in");
+            //            }
+
+            var heightSet = 0;
+
+            if ($(window).width() < 768) {
+                heightSet = 150;
+            } else if ($(window).width() < 992) {
+                heightSet = 140;
+            } else {
+                heightSet = 125;
+            }
+
+            var selector = '.shopFrame_' + dataShop[0].pid;
+
+            var search = dataShop[0].pid;
+            var occurances = prodArr.filter(function (val) {
+                return val === search;
+            }).length;
+            console.log(occurances); //3
+            $(selector).height((heightSet * (occurances + 1)));
+
+        });
+
+    });
+
+
+
+}
+
+if (page_name === "confirmation") {
+    var paymentStored = localStorage.getItem(appname + 'simpleCart_checkArr').split(',');
+    var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
+
+    var totalPrice = 0;
+    $.each(paymentStored, function (i, dataPayment) {
+        $.each(cart_obj, function (i, data) {
+            if (data.prodid == dataPayment) {
+                console.log(data);
+                $('.shop-name').html(data.pname);
+                var purchaseList = '<ul style="border-bottom:1px solid lightgray;display:inline-flex;width:100%;padding-top:0.5em;padding-bottom:0.5em"><li><img src="' + data.image + '" style="height:60px;object-fit:contain;"></li> <li style="width:100%;margin-left:1em"> <p>' + data.name + '</p> <p style="float:right;font-size:13px;font-weight:100;padding-right:0.5em">X' + data.quantity + '</p> <p>RM' + data.price + '</p> </li></ul>';
+                $('.purchase-list').append(purchaseList);
+                totalPrice = totalPrice + (parseFloat(data.price) * parseInt(data.quantity));
+            }
+        });
+    });
+    if (paymentStored.length > 1) {
+        $('.total-item').html(paymentStored.length + ' Items');
+    } else {
+        $('.total-item').html(paymentStored.length + ' Item');
+    }
+
+    $('.total-price').html('RM' + totalPrice.toFixed(2));
+
+    var heightPanel = $('.delivery-info').height();
+    $('.account-info').height(heightPanel);
+
+    $('#pro_payment').on('click', function () {
+        $('#payment-modal').modal('show');
+        paymentGet(page);
+    });
+
+
+
+    function paymentGet(pid) {
+        var formattedDate = new Date();
+        var d = formattedDate.getDate();
+        var m = formattedDate.getMonth();
+        m += 1; // JavaScript months are 0-11
+        var y = formattedDate.getFullYear();
+
+        var batch_id = 'batch_' + y + m + d + '_' + (Math.floor(Math.random() * 9999999999) + 1);
+        var username = $('#username').text();
+        var userid = $('#userid').text();
+        var useremail = $('#useremail').text();
+        var userphone = $('#userphone').text();
+        var useraddress1 = $('#useraddress1').text();
+        var useraddress2 = $('#useraddress2').text();
+        var useraddress3 = $('#useraddress3').text();
+        var userpostcode = $('#userpostcode').text();
+        var userstate = $('#userstate').text();
+        var usernote = $('.note-area').val();
+
+        var prodArr = new Array(10);
+        var quantityArr = new Array(10);
+        var counter = 0;
+        var price_sum = 0;
+
+        $.each(cart_obj, function (i, dataPayment) {
+            console.log(dataPayment);
+            if (dataPayment.pid == pid) {
+                console.log(dataPayment.prodid);
+                prodArr[counter] = dataPayment.prodid;
+                $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataPayment.prodid, function (dataPrice) {
+                    price_sum = price_sum + (dataPrice[0].price * dataPayment.quantity);
+                });
+                quantityArr[counter] = dataPayment.quantity;
+                counter++;
+            }
+        });
+
+        for (i = 0; i < prodArr.length; i++) {
+            if (prodArr[i] == "" || prodArr[i] == null) {
+                prodArr[i] = 0;
+                quantityArr[i] = 0;
+            }
+        }
+
+        setTimeout(function () {
+            $.getJSON('../get_cart_info.php?action=insert', {
+                uid: userid,
+                pid: pid,
+                product1: prodArr[0],
+                product2: prodArr[1],
+                product3: prodArr[2],
+                product4: prodArr[3],
+                product5: prodArr[4],
+                product6: prodArr[5],
+                product7: prodArr[6],
+                product8: prodArr[7],
+                product9: prodArr[8],
+                product10: prodArr[9],
+                quantity1: quantityArr[0],
+                quantity2: quantityArr[1],
+                quantity3: quantityArr[2],
+                quantity4: quantityArr[3],
+                quantity5: quantityArr[4],
+                quantity6: quantityArr[5],
+                quantity7: quantityArr[6],
+                quantity8: quantityArr[7],
+                quantity9: quantityArr[8],
+                quantity10: quantityArr[9],
+                price_sum: price_sum,
+                delivery_name: username,
+                delivery_email: useremail,
+                delivery_phone: userphone,
+                delivery_address1: useraddress1,
+                delivery_address2: useraddress2,
+                delivery_address3: useraddress3,
+                delivery_postcode: userpostcode,
+                delivery_state: userstate,
+                batch_id: batch_id
+            }, function (dataCartInfo) {
+                var total_price = parseFloat(dataCartInfo[0].price_sum).toFixed(2);
+                var TX = Math.random();
+                var fpxkeyRand = Math.random();
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://mall.bizapp.my/apigenerator.php?api_name=EMALL_TRACK_SAVE_ORDER_MULTIPLE_NEW&TX=" + TX,
+                    data: {
+                        emall_userid: userid,
+                        emall_batchid: batch_id,
+                        pid: pid,
+                        name: username,
+                        address: useraddress1 + '\n' + useraddress2 + '\n' + useraddress3 + '\n' + userpostcode + '\n' + userstate,
+                        hpno: userphone,
+                        email: useremail,
+                        productid1: prodArr[0],
+                        productid2: prodArr[1],
+                        productid3: prodArr[2],
+                        productid4: prodArr[3],
+                        productid5: prodArr[4],
+                        productid6: prodArr[5],
+                        productid7: prodArr[6],
+                        productid8: prodArr[7],
+                        productid9: prodArr[8],
+                        productid10: prodArr[9],
+                        sellingprice: total_price,
+                        actualpaidtostockistprice: total_price,
+                        quantity1: quantityArr[0],
+                        quantity2: quantityArr[1],
+                        quantity3: quantityArr[2],
+                        quantity4: quantityArr[3],
+                        quantity5: quantityArr[4],
+                        quantity6: quantityArr[5],
+                        quantity7: quantityArr[6],
+                        quantity8: quantityArr[7],
+                        quantity9: quantityArr[8],
+                        quantity10: quantityArr[9],
+                        hargakospos: '0',
+                        hargakospos_id: '0',
+                        note: usernote,
+                        kempenid: '0',
+                        fpxkey: fpxkeyRand
+                    },
+                    success: function (dataCheckout) {
+                        dataCheckout = JSON.parse(dataCheckout);
+                        console.log(dataCheckout);
+                        if (dataCheckout[0].itemsangkut == "") {
+                            var TX = Math.random();
+                            //                    alert(total_price);
+                            $.ajax({
+                                type: "POST",
+                                url: "http://mall.bizapp.my/apigenerator.php?api_name=EMALL_TRACK_CREATE_BILL_TO_STOCKIST&TX=" + TX,
+                                data: {
+                                    pid: pid,
+                                    nilai: total_price,
+                                    pidstokis: pid,
+                                    GLOBAL_FPXKEY: fpxkeyRand
+                                },
+                                success: function (dataBillPliz) {
+                                    alert(dataBillPliz);
+                                    //simpan url (emall_fpxurl)
+                                    $.get('../get_cart_info.php?action=updatefpx&fpxurl=' + dataBillPliz + '&uid=' + userid + '&batchid=' + batch_id, function (dataCartFPX) {
+                                        //                                        $('#payment-modal').attr('style', 'height:80vh;width:80vw');
+                                        //                                        $('.modal-content').html('<div class="modal-header"> <a class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a> <h4 class="modal-title">BillPliz</h4> </div><div class="modal-body"><iframe src="' + dataBillPliz + '" style="width:100%;height:80vh"></iframe></div>');
+                                        //                                        $('#payment-modal').modal('show');
+                                        window.open(dataBillPliz, '_blank');
+                                        $.get('../get_cart_info.php?action=updatecheckout&uid=' + userid + '&batchid=' + batch_id, function () {
+                                            simpleCart.each(function (item) {
+                                                if (paymentStored.indexOf(item.get("prodid")) >= 0) {
+                                                    //                                                    item.remove();
+                                                }
+                                            });
+                                            //                                            window.open('cart-history.html', '_self');
+                                        });
+                                    });
+                                }
+                            });
+                        } else {
+                            alert("Item Cannot Be Processed: " + dataCheckout[0].itemsangkut);
+                            //                            window.open('checkout.html?id=' + pid, '_self');
+                        }
+                    }
+                });
+            });
+        }, 3000);
+    }
+}
 
 //get product with limit
 function getProductsWithLimit(target, limit) {

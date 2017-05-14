@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html style="background:#fff !important">
+
+<head>
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
+    <!-- dotdotdot -->
+    <script src="js/jquery.dotdotdot.min.js"></script>
+    <script src="js/simpleCart.min.js"></script>
+    <link href='//fonts.googleapis.com/css?family=Cabin:400,500,600,700' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:400,100,300,700,900' rel='stylesheet' type='text/css'>
+    <style>
+        .headerRow {
+            display: none;
+        }
+    </style>
+</head>
+
+<body style="background:#fff !important">
+    <div class="simpleCart_items"></div>
+    <div class="cart-total" style="float:right;margin-bottom:2em;padding-right: 1.5em;">
+        <ul class="total_price">
+            <li class="last_price">
+                <h4>TOTAL</h4></li>
+            <li class="last_price simpleCart_total_custom"><span>---</span></li>
+            <div class="clearfix"> </div>
+        </ul>
+        <a href="javascript:void(0)" id="pro_payment">Proceed to payment</a>
+
+    </div>
+    <script>
+        $(".ellipsis").dotdotdot({
+            watch: "window"
+        });
+
+        var appname = $(location).attr('hostname');
+        generateCartTotal();
+
+        function generateCartTotal() {
+            var total_price = 0;
+
+            function getParam(param) {
+                var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
+                return results[1] || 0;
+            }
+            var pid = getParam("id");
+            var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
+            console.log(cart_obj);
+            $.each(cart_obj, function (i, dataCart) {
+                if (dataCart.pid == pid) {
+                    total_price = total_price + (parseFloat(dataCart.price) * dataCart.quantity);
+                }
+            });
+            $('.simpleCart_total_custom').html('RM' + parseFloat(total_price).toFixed(2));
+            $('#pro_payment').on('click', function () {
+                window.open('confirmation/' + pid, '_parent');
+            });
+        }
+    </script>
+</body>
+
+</html>

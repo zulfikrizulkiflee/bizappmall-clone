@@ -6360,7 +6360,7 @@ a.list-group-item-danger.active:focus {
 }
 
 .panel {
-    margin-bottom: 20px;
+    /*    margin-bottom: 20px;*/
     background-color: #fff;
     border: 1px solid transparent;
     border-radius: 4px;
@@ -6369,7 +6369,7 @@ a.list-group-item-danger.active:focus {
 }
 
 .panel-body {
-    padding: 15px;
+    /*    padding: 15px;*/
 }
 
 .panel-heading {
@@ -6634,7 +6634,7 @@ a.list-group-item-danger.active:focus {
 
 .panel-default > .panel-heading {
     color: #333;
-    background-color: #f5f5f5;
+    background-color: rgba(41, 171, 226, 0.41);
     border-color: #ddd;
 }
 

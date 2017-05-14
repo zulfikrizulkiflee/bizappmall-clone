@@ -1,6 +1,9 @@
 /*mobile*/
 
 @media(max-width:600px) {
+    .delivery-info {
+        margin-left: 0 !important;
+    }
     .bizapp-sort-by-options .bizapp-dropdown-popover {
         left: -145px !important;
     }
@@ -132,6 +135,13 @@
 }
 
 .comment-area {
+    display: inline-block;
+    width: 93%;
+    resize: none;
+    border-radius: 0;
+}
+
+.note-area {
     display: inline-block;
     width: 93%;
     resize: none;
@@ -880,7 +890,91 @@
     margin: 0 !important;
 }
 
-.modal-static .modal-content .icon {}
+.checkout-container {
+    /*    display: inline-grid;*/
+    /*    width: 15.66%;*/
+    /*    border-top: 1px solid lightgray;*/
+    /*    text-align: center;*/
+    color: #333;
+    background: #fff;
+    font-size: 1em;
+    /*    border-radius: 3px;*/
+    /*    margin-right: 1%;*/
+    /*    padding-left: 1em;*/
+    /*    padding-right: 1em;*/
+    padding: 0;
+    /* margin-bottom: 1em; */
+}
+
+
+/*simplecart style*/
+
+.view-shop {
+    float: right;
+    border: 2px solid #f57400;
+    color: #f57400 !important;
+    padding: 0.3em;
+}
+
+.item-image,
+.item-name,
+.item-price,
+.item-decrement,
+.item-quantity,
+.item-increment,
+.item-total,
+.item-remove {
+    display: inline-block;
+}
+
+.item-image img {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.itemRow {
+    padding: 0.5em;
+    border-bottom: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+}
+
+.item-total {
+    font-size: 1.5em;
+    color: #f57400;
+}
+
+.item-remove {
+    color: #f57400;
+    font-size: 1.5em;
+    text-align: right;
+}
+
+.shop-header {}
+
+
+/*confirmation style*/
+
+.account-info,
+.delivery-info,
+.purchase-info {
+    border: 1px solid lightgray;
+    color: #333;
+    background: #fff;
+    font-size: 1em;
+    border-radius: 3px;
+    /*    margin-right: 0 !important;*/
+    padding: 0.5em !important;
+    margin-bottom: 0.5em;
+}
+
+.payment-wrapper {
+    padding: 0;
+}
+
+.delivery-info {
+    margin-left: 0.5em;
+}
 
 
 /*custom*/
@@ -2746,7 +2840,7 @@ ul.nav.nav-pills {
 .close1,
 .close2,
 .close3 {
-    background: url('../images/circle.png') no-repeat 0px 0px;
+    background: url('../myimages/ico/delete.png') no-repeat 0px 0px;
     cursor: pointer;
     width: 28px;
     height: 28px;
@@ -2876,7 +2970,7 @@ ul.total_price {
 /*--quantity-starts--*/
 
 .quantity {
-    margin: 0.5em 0;
+    /*    margin: 0.5em 0;*/
     float: left;
 }
 
@@ -3797,7 +3891,7 @@ span.span-1 {
 @media (max-width: 384px) {
     .value-minus,
     .value-plus {
-        margin-right: 11px;
+        /*        margin-right: 11px;*/
     }
 }
 
