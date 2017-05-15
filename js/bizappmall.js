@@ -315,7 +315,7 @@ if (page === "discover") {
             totalPages: 20,
             visiblePages: 5,
             onPageClick: function (event, page) {
-                getProductsNoLimit('.category-inside-list', '000', 'date', 'desc', page);
+                getProductsNoLimit('browseP', '.category-inside-list', '000', 'date', 'desc', page);
                 $('html, body').animate({
                     scrollTop: 0
                 }, '500', function () {});
@@ -632,8 +632,6 @@ if (page === "checkout") {
 
     });
 
-
-
 }
 
 if (page_name === "confirmation") {
@@ -835,6 +833,20 @@ if (page_name === "confirmation") {
             });
         }, 3000);
     }
+}
+
+if (page_name === "search-shop") {
+    var searchParam = page;
+
+    if (searchParam == "") {
+        $('.search-input').val("");
+    } else {
+        $('.search-input').val(decodeURIComponent(searchParam));
+    }
+
+    $.getJSON('http://mall.bizapp.my/get_products.php?action=searchS&param=' + searchParam, function (data) {
+        console.log(data);
+    });
 }
 
 //get product with limit

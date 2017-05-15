@@ -120,61 +120,7 @@
         </div>
         <!-- //header -->
 
-        <!-- //banner -->
-        <div class="container">
-            <div class="col-xs-12 col-md-12 promo-carousel">
-                <div id="promo-carousel" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#promo-carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#promo-carousel" data-slide-to="1"></li>
-                        <li data-target="#promo-carousel" data-slide-to="2"></li>
-                    </ol>
 
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <img class="promo-carousel-img" src="../myimages/banner/raya.jpg" alt="">
-                        </div>
-                        <div class="item">
-                            <img class="promo-carousel-img" src="../myimages/banner/gadgets.jpg" alt="">
-                        </div>
-
-                        <div class="item">
-                            <img class="promo-carousel-img" src="http://www.kstarsports.com/images/product_banner.jpg" alt="New York">
-                        </div>
-                    </div>
-
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#promo-carousel" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#promo-carousel" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!--discover-->
-        <div class="container">
-            <div class="col-md-2 side-category">
-                <p style="margin-bottom:1.5em;padding-bottom:1em;padding-top:1em;border-bottom:1px solid lightgray;"><a href="000"><i class="fa fa-list" aria-hidden="true"></i> ALL CATEGORIES</a></p>
-                <ul class="side-category-list">
-                </ul>
-            </div>
-            <div class="col-md-10 discover">
-                <div class="row category-inside-list">
-                </div>
-            </div>
-            <div class="container navigation">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="pagination"></ul>
-                </nav>
-            </div>
-        </div>
 
         <!-- footer -->
         <div class="footer">

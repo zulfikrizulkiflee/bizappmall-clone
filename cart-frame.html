@@ -55,7 +55,11 @@
             });
             $('.simpleCart_total_custom').html('RM' + parseFloat(total_price).toFixed(2));
             $('#pro_payment').on('click', function () {
-                window.open('confirmation/' + pid, '_parent');
+                if ($('.simpleCart_total_custom').html() != "RM0.00") {
+                    window.open('confirmation/' + pid, '_parent');
+                } else {
+                    alert("No item found");
+                }
             });
         }
     </script>
