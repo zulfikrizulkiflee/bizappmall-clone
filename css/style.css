@@ -1,10 +1,14 @@
 /*mobile*/
 
 @media(max-width:600px) {
+    .shop-detail-section {
+        border-right: 0 !important;
+    }
     .delivery-info {
         margin-left: 0 !important;
     }
-    .bizapp-sort-by-options .bizapp-dropdown-popover {
+    .bizapp-sort-by-options .bizapp-dropdown-popover,
+    .bizapp-popover {
         left: -145px !important;
     }
     .comment-area {
@@ -558,6 +562,10 @@
     text-align: center;
 }
 
+.shop-detail-section {
+    border-right: 1px solid lightgray;
+}
+
 .see-more {
     width: 32.32%;
     margin-left: 33.33%;
@@ -859,7 +867,8 @@
     border: 1px solid rgba(0, 0, 0, 0.09);
 }
 
-.bizapp-dropdown-popover {
+.bizapp-dropdown-popover,
+.bizapp-popover {
     display: flex;
     align-items: center;
     user-select: none;
@@ -910,6 +919,8 @@
 /*simplecart style*/
 
 .view-shop {
+    text-align: center;
+    background: #f1f1f1;
     float: right;
     border: 2px solid #f57400;
     color: #f57400 !important;

@@ -121,10 +121,15 @@
         <!-- //header -->
 
         <div class="container">
-            <h4>Shops found with "<span class="search-param-page"></span>"</h4>
-            <div class="col-xs-12 col-md-12 shop-found-list" style="margin-top:0.5em;padding:0">
+            <h4>Products found with "<span class="search-param-page"></span>"</h4>
+            <div class="col-md-2 side-category">
+                <p style="margin-bottom:1.5em;padding-bottom:1em;padding-top:1em;border-bottom:1px solid lightgray;"><a href="000"><i class="fa fa-list" aria-hidden="true"></i> ALL CATEGORIES</a></p>
+                <ul class="side-category-list">
+                </ul>
+            </div>
+            <div class="col-xs-12 col-md-10 product-found-list" style="margin-top:0.5em;padding:0">
                 <div style="height:50vh;text-align:center;padding-top:15vh;">
-                    <h4>No shops found...</h4>
+                    <h4>No products found...</h4>
                 </div>
             </div>
         </div>

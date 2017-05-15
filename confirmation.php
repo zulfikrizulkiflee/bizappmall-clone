@@ -212,6 +212,17 @@
                 </div>
             </div>
         </div>
+        <div class="modal modal-static fade" id="done-modal" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <h4>Please Pay</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--custom js-->
         <script src="../js/bizappmall.js"></script>
         <script>

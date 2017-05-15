@@ -231,14 +231,6 @@
             </div>
         </div>
         <!-- //footer -->
-        <div id='user-drawer-content' class="">
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button'>My purchase</div>
-            </div>
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button' class="logout-btn">Logout</div>
-            </div>
-        </div>
         <!--custom js-->
         <script src="../js/bizappmall.js"></script>
         <script>

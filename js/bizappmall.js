@@ -4,6 +4,10 @@ var link_product = "http://corrad.visionice.net/bizapp/upload/product/";
 var link_shop = "http://corrad.visionice.net/bizapp/upload/profile/";
 var unavailable = "myimages/not_available.gif";
 
+var current_page = $(location).attr('pathname');
+current_page = current_page.split('/');
+var page_name = current_page[(current_page.length - 2)];
+
 $(function () {
     $("img.item_image").lazyload({
         effect: "fadeIn"
@@ -11,6 +15,8 @@ $(function () {
 });
 
 var appname = $(location).attr('hostname');
+
+var domainname = 'http://www.ansi.com.my';
 
 var page = $(location).attr('pathname');
 page = page.split('/');
@@ -99,7 +105,7 @@ $('[data-toggle="popover"]').popover({
 
 //search function
 //    search
-var suggest_box = '<div class="bizapp-dropdown-popover search-popover col-xs-12 col-md-12" style="visibility:hidden;position:absolute;top:50px;left:0;width:230px;height:100px;z-index:2;border:1px solid lightgray;"> <ul style="width:100%"> <li class="dropdown-price price-low-high search-popover-list shop-search" data-option="lowhigh"><i class="fa fa-building-o" aria-hidden="true"></i> Search \"<span class="search-param"></span>\" shop</li></ul> </div>';
+var suggest_box = '<div class="bizapp-popover search-popover col-xs-12 col-md-12" style="visibility:hidden;position:absolute;top:50px;left:0;width:230px;height:100px;z-index:2;border:1px solid lightgray;"> <ul style="width:100%"> <li class="search-popover-list shop-search"><i class="fa fa-building-o" aria-hidden="true"></i> Search \"<span class="search-param"></span>\" shop</li></ul> </div>';
 $('.input-group').append(suggest_box);
 var searchlength = $('.input-group-btn').width();
 $('.search-popover').css('width', 'calc(100% - ' + searchlength + 'px)');
@@ -120,16 +126,21 @@ $('.search-input').keyup(function (e) {
     });
 
     if (search_length > 0) {
-        $('.bizapp-dropdown-popover').css('visibility', 'visible');
+        $('.search-popover').css('visibility', 'visible');
     } else {
-        $('.bizapp-dropdown-popover').css('visibility', 'hidden');
+        $('.search-popover').css('visibility', 'hidden');
     }
 
     var code = e.which; // recommended to use e.which, it's normalized across browsers
     if (code == 13) e.preventDefault();
     if (code == 13 || click == true) {
         var searchParam = $(this).val();
-        alert(searchParam);
+        if (page_name == "search-product" || page_name == "search-shop" || page_name == "shop" || page_name == "product" || page_name == "category" || page_name == "confirmation") {
+            window.open('../search-product/' + search_param, '_self');
+        } else {
+            window.open('search-product/' + search_param, '_self');
+        }
+
         //        startSearch(searchParam);
     } // missing closing if brace
 });
@@ -186,10 +197,6 @@ function generateFooterCategoryList() {
         });
     });
 }
-
-var current_page = $(location).attr('pathname');
-current_page = current_page.split('/');
-var page_name = current_page[(current_page.length - 2)];
 
 if (page == '') {
     //get category JSON
@@ -465,7 +472,7 @@ if (page_name === "shop") {
 
     window.onmouseover = function (e) {
         if (e.target.className == "bizapp-sort-by-options__option price-key" || e.target.className == "dropdown-price price-low-high" || e.target.className == "dropdown-price price-high-low" || e.target.className == "bizapp-sort-by-options__option price-key option-selected" || e.target.className == "price-selection") {} else {
-            $('.bizapp-dropdown-popover').attr('style', 'visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2');
+            $('.bizapp - dropdown - popover').attr('style', 'visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2');
         }
     };
 
@@ -694,7 +701,7 @@ if (page_name === "confirmation") {
 
         $.each(cart_obj, function (i, dataPayment) {
             console.log(dataPayment);
-            if (dataPayment.pid == pid) {
+            if (paymentStored.indexOf(dataPayment.prodid) >= 0) {
                 console.log(dataPayment.prodid);
                 prodArr[counter] = dataPayment.prodid;
                 $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataPayment.prodid, function (dataPrice) {
@@ -711,6 +718,13 @@ if (page_name === "confirmation") {
                 quantityArr[i] = 0;
             }
         }
+
+        //        setTimeout(function () {
+        //            console.log(prodArr);
+        //            console.log(quantityArr);
+        //            $('#payment-modal').modal('hide');
+        //            $('#done-modal').modal('show');
+        //        }, 3000);
 
         setTimeout(function () {
             $.getJSON('../get_cart_info.php?action=insert', {
@@ -788,9 +802,11 @@ if (page_name === "confirmation") {
                         hargakospos_id: '0',
                         note: usernote,
                         kempenid: '0',
-                        fpxkey: fpxkeyRand
+                        fpxkey: fpxkeyRand,
+                        domainname: domainname
                     },
                     success: function (dataCheckout) {
+                        console.log(fpxkeyRand);
                         dataCheckout = JSON.parse(dataCheckout);
                         console.log(dataCheckout);
                         if (dataCheckout[0].itemsangkut == "") {
@@ -803,23 +819,26 @@ if (page_name === "confirmation") {
                                     pid: pid,
                                     nilai: total_price,
                                     pidstokis: pid,
-                                    GLOBAL_FPXKEY: fpxkeyRand
+                                    GLOBAL_FPXKEY: fpxkeyRand,
+                                    domainname: domainname
                                 },
                                 success: function (dataBillPliz) {
-                                    alert(dataBillPliz);
+                                    //                                    alert(dataBillPliz);
                                     //simpan url (emall_fpxurl)
                                     $.get('../get_cart_info.php?action=updatefpx&fpxurl=' + dataBillPliz + '&uid=' + userid + '&batchid=' + batch_id, function (dataCartFPX) {
-                                        //                                        $('#payment-modal').attr('style', 'height:80vh;width:80vw');
-                                        //                                        $('.modal-content').html('<div class="modal-header"> <a class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a> <h4 class="modal-title">BillPliz</h4> </div><div class="modal-body"><iframe src="' + dataBillPliz + '" style="width:100%;height:80vh"></iframe></div>');
-                                        //                                        $('#payment-modal').modal('show');
                                         window.open(dataBillPliz, '_blank');
                                         $.get('../get_cart_info.php?action=updatecheckout&uid=' + userid + '&batchid=' + batch_id, function () {
-                                            simpleCart.each(function (item) {
-                                                if (paymentStored.indexOf(item.get("prodid")) >= 0) {
-                                                    //                                                    item.remove();
-                                                }
+                                            console.log(cart_obj);
+                                            $.each(paymentStored, function (i, dataPayment) {
+                                                simpleCart.each(function (item) {
+                                                    if (item.get("prodid") == dataPayment) {
+                                                        item.remove();
+                                                    }
+                                                });
                                             });
-                                            //                                            window.open('cart-history.html', '_self');
+
+                                            console.log(cart_obj);
+                                            window.open('../checkout', '_self');
                                         });
                                     });
                                 }
@@ -838,6 +857,8 @@ if (page_name === "confirmation") {
 if (page_name === "search-shop") {
     var searchParam = page;
 
+    $('.search-param-page').html(searchParam);
+
     if (searchParam == "") {
         $('.search-input').val("");
     } else {
@@ -845,8 +866,175 @@ if (page_name === "search-shop") {
     }
 
     $.getJSON('http://mall.bizapp.my/get_products.php?action=searchS&param=' + searchParam, function (data) {
-        console.log(data);
+        if (data.length > 0) {
+            $('#search-modal').modal('show');
+            $('.shop-found-list').html('');
+            console.log(data);
+            $.each(data, function (i, dataShopFound) {
+                var shop_logo = '';
+                var shop_img = '';
+                var shop_image = '';
+                var shopFound = '';
+
+                $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + dataShopFound.pid + '&order=shop_detail', function (dataShop) {
+                    shop_img = link_shop + dataShop[0].attachmentphoto;
+                    shop_logo = link_shop + dataShop[0].attachmentlogo;
+
+                    if (shop_logo != link_shop) {
+                        shop_image = shop_logo;
+                    } else if (shop_img != link_shop) {
+                        shop_image = shop_img;
+                    } else {
+                        shop_image = '../' + unavailable;
+                    }
+
+                    shopFound = '<div class="col-xs-12 col-md-12 product-grid product-grid-shadow shop_' + dataShopFound.pid + '" style="display:inline-block;color:#333;margin-bottom:0.5em;padding:0.5em"> <div class="col-xs-4 col-md-1" style="padding:0"><img class="shop_logo" src="' + shop_image + '" style="height:78px;width:78px"></div> <div class="col-xs-8 col-md-3 shop-detail-section" style="height:78px;text-align:left"> <ul> <li><span class="shop-name" style="font-weight:bold;font-size:1.5em">' + dataShop[0].nama + '</span></li>  </ul> </div> <div class="col-xs-12 col-md-2 shop-detail-section" style="text-align:center;padding-top:10px;height:78px"> <ul style="padding-top: 18px;"> <li><a href="../shop/' + dataShopFound.pid + '" class="view-shop" target="_self" style="background:#fff;float:none">View Shop</a></li> </ul> </div> <div class="col-xs-12 col-md-3 shop-detail-section" style="height:78px;padding-top:9px"> <ul class="img-list" style="display:flex;justify-content:space-between;align-items:center;"> <li> <a href=""><img src="" style="height:60px;width:60px"></a> </li> <li> <a href=""><img src="" style="height:60px;width:60px"></a> </li> <li> <a href=""><img src="" style="height:60px;width:60px"></a> </li> </ul> </div> <div class="col-xs-12 col-md-3 shop-detail-section" style="height:78px;padding-top:20px;border-right:none"> <ul style="display:flex;justify-content:space-between;align-items:center"> <li> <p><i class="fa fa-gift" aria-hidden="true"></i> <span class=product-num></span></p> <p>Products</p> </li> <li> <p><i class="fa fa-star" aria-hidden="true"></i> <span>2</span></p> <p>Ratings</p> </li> <li> <p><i class="fa fa-heart-o" aria-hidden="true"></i> <span>42</span></p> <p>Like</p> </li> </ul> </div> </div>';
+                });
+                var order = "latest";
+                setTimeout(function () {
+                    $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + dataShopFound.pid + '&order=' + order, function (dataShopProducts) {
+                        if (dataShopProducts.length > 0) {
+                            $('.shop-found-list').append(shopFound);
+                            $('#search-modal').modal('hide');
+                        }
+                        var selectorProd = '.shop_' + dataShopFound.pid + ' .product-num';
+                        $(selectorProd).html(dataShopProducts.length);
+                        for (k = 0; k < 3; k++) {
+                            var prod = 'prod' + k;
+                            var selector = '.shop_' + dataShopFound.pid + ' .img-list li:nth-child(' + (k + 1) + ') img';
+                            var selector2 = '.shop_' + dataShopFound.pid + ' .img-list li:nth-child(' + (k + 1) + ') a';
+                            if (dataShopProducts[k] != null) {
+                                prod = link_product + dataShopProducts[k].attachment;
+                                $(selector).attr('src', prod);
+                                $(selector2).attr('href', '../product/' + dataShopProducts[k].id)
+                            } else {
+                                $(selector).remove();
+                            }
+
+                        }
+                    });
+                }, 1000);
+            });
+        }
     });
+}
+
+if (page_name === "search-product") {
+    var searchParam = page;
+
+    $('.search-param-page').html(searchParam);
+
+    if (searchParam == "") {
+        $('.search-input').val("");
+    } else {
+        $('.search-input').val(decodeURIComponent(searchParam));
+    }
+
+    $.getJSON('http://mall.bizapp.my/get_category.php', function (dataMain) {
+        $.each(dataMain, function (i, data) {
+            var desc = data.description_en;
+            desc = desc.replace(/---/g, '');
+            if (desc == "TERBUKA") {
+                desc = "MISC";
+            }
+
+            var cat_str = '<li class="catList itemCat_' + data.code + '" style="padding-left:0.7em;margin-bottom:0.5em"><a href="javascript:void(0)" onclick="displayCategory(' + data.code + ')">' + desc + ' (<span class="itemCode_' + data.code + '">0</span>)</a></li>';
+
+            $('.side-category-list').append(cat_str);
+            displayLength(data.code);
+        });
+    });
+
+    var jsonArr;
+
+    $.getJSON('http://mall.bizapp.my/get_products.php?action=searchP&param=' + searchParam, function (data) {
+        //        alert(data.length);
+        jsonArr = data;
+        $('#search-modal').modal('show');
+        //        $('.product-found-list').html('');
+        console.log(data);
+        if (data.length > 0) {
+            $('.product-found-list').html('');
+            $.each(data, function (i, dataProductFound) {
+                getProductSingle('single', dataProductFound.id, '.product-found-list');
+            });
+        }
+        $('#search-modal').modal('hide');
+    });
+
+    function displayLength(code) {
+        $.getJSON('http://mall.bizapp.my/get_products.php?action=searchP&param=' + searchParam, function (data) {
+            //        alert(data.length);
+            jsonArr = data;
+            var results = [];
+            var searchField = "productcategorycode";
+            var searchVal = code;
+            for (var i = 0; i < jsonArr.length; i++) {
+                if (jsonArr[i][searchField] == searchVal) {
+                    results.push(jsonArr[i]);
+                }
+            }
+            if (results.length > 0) {
+                var selector = '.itemCode_' + code;
+                $(selector).html(results.length);
+            }
+        });
+
+
+
+    }
+
+    function displayCategory(code) {
+        $('.catList').each(function () {
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+            }
+        });
+        var selector = '.itemCat_' + code;
+        $(selector).addClass('active');
+        $('#search-modal').modal('show');
+        var results = [];
+        var searchField = "productcategorycode";
+        var searchVal = code;
+        for (var i = 0; i < jsonArr.length; i++) {
+            if (jsonArr[i][searchField] == searchVal) {
+                results.push(jsonArr[i]);
+            }
+        }
+        if (results.length > 0) {
+            $('.product-found-list').html('');
+            for (i = 0; i < results.length; i++) {
+                console.log(results[i].id);
+                var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + results[i].id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + results[i].attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + results[i].attachment + '"><p class="item_name">' + results[i].productname + '</p><p class="row price-like-container"><span class="item_price">RM' + results[i].price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + results[i].id + '">0</span></span></p></div></div></a></div>';
+                $('.product-found-list').append(top_str);
+                var selector = '.item_like_' + results[i].id;
+                getLikeNumber("get", "product", selector, results[i].id);
+            }
+            var t = 0; // the height of the highest element (after the function runs)
+            var t_elem; // the highest element (after the function runs)
+            $('.product-grid-wrapper').each(function () {
+                $this = $(this);
+                if ($this.outerHeight() > t) {
+                    t_elem = this;
+                    t = $this.outerHeight();
+                }
+            });
+            $('.product-grid-wrapper').attr('style', 'height:' + t + 'px');
+            var f = 0; // the height of the highest element (after the function runs)
+            var f_elem; // the highest element (after the function runs)
+            $('.product-grid .item_name').each(function () {
+                $this = $(this);
+                if ($this.outerHeight() > f) {
+                    f_elem = this;
+                    f = $this.outerHeight();
+                }
+            });
+            $('.product-grid .item_name').attr('style', 'height:' + f + 'px');
+        } else {
+            $('.product-found-list').html('<div style="height:50vh;text-align:center;padding-top:15vh;"> <h4>No products found...</h4> </div>');
+        }
+        $('#search-modal').modal('hide');
+    }
 }
 
 //get product with limit
@@ -927,5 +1115,36 @@ function getLikeNumber(action, target, target_class, id) {
         if (action == "set") {
 
         }
+    });
+}
+
+function getProductSingle(action, prodid, target) {
+    $.getJSON('http://mall.bizapp.my/get_products.php?action=' + action + '&id=' + prodid, function (data) {
+        $.each(data, function (i, data) {
+            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
+            $(target).append(top_str);
+            var selector = '.item_like_' + data.id;
+            getLikeNumber("get", "product", selector, data.id);
+        });
+        var t = 0; // the height of the highest element (after the function runs)
+        var t_elem; // the highest element (after the function runs)
+        $('.product-grid-wrapper').each(function () {
+            $this = $(this);
+            if ($this.outerHeight() > t) {
+                t_elem = this;
+                t = $this.outerHeight();
+            }
+        });
+        $('.product-grid-wrapper').attr('style', 'height:' + t + 'px');
+        var f = 0; // the height of the highest element (after the function runs)
+        var f_elem; // the highest element (after the function runs)
+        $('.product-grid .item_name').each(function () {
+            $this = $(this);
+            if ($this.outerHeight() > f) {
+                f_elem = this;
+                f = $this.outerHeight();
+            }
+        });
+        $('.product-grid .item_name').attr('style', 'height:' + f + 'px');
     });
 }
