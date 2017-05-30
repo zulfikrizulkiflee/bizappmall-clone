@@ -1,8 +1,20 @@
 <?php
     include("session.php");
-    if(isset($_SESSION['username'])){
-        header("location: ../");
+
+    $message='';
+
+    if($_SERVER['SERVER_NAME']=="localhost"){
+        $home=$_SERVER['SERVER_NAME']."/Project BizApp/bizappmall";
+    }else if($_SERVER['SERVER_NAME']=="www.ansi.com.my"){
+        $home=$_SERVER['SERVER_NAME']."/bizappmall";
+    }else{
+        $home=$_SERVER['SERVER_NAME'];
     }
+
+    if(isset($_SESSION['username'])){
+        header("Location: http://".$home);
+    }
+
 
     $error = ""; //Variable for storing our errors.
     if(isset($_POST["submit"])){
@@ -39,7 +51,7 @@
                 $subject="Your confirmation link here";
 
                 // From
-                $header="from: BizApp <no_reply@bizapp.com>";
+                $header="from: BizApp <zulfikri@ansi.com.my>";
 
                 // Your message
                 $message="Your Comfirmation link \r\n";
@@ -48,8 +60,11 @@
 
                 // send email
                 mail($to,$subject,$message,$header);
-                echo "Registration Complete, ";
-                echo "Please check your email";
+                
+                $message="Proceed to login";
+                header("Location: http://".$home."/login");
+//                echo "Registration Complete, ";
+//                echo "Please check your email";
             }else{
                 $error = "Something went wrong.";
             }
@@ -119,7 +134,7 @@
                             <li>|</li>
                             <li>Follow us on <a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true"></i></a> <a href="#" target="_blank"><i class="fa fa-instagram header-icon" aria-hidden="true"></i></a></li>
                             <li>|</li>
-                            <li><a href="http://web.bizapp.my/" target="_blank"><b>Sell</b></a></li>
+                            <li><a href="register-seller" target="_self"><b>Sell</b></a></li>
                         </ul>
                     </div>
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
@@ -136,7 +151,10 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo '<li><a href="javascript:void(0)"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo "<li class='pipe'>|</li>";
+                                        echo '<li class="logout-btn"><a href="javascript:void(0)">Logout</a></li>';
+                                        echo "<input type='hidden' id='session-login' value='".$_SESSION['uid']."'>";
                                         echo "<li class='pipe'>|</li>";
                                     }else{
                                         echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
@@ -196,16 +214,16 @@
                             <i class="glyphicon glyphicon-user"></i>
                         </div>
                         <div class="login-mail">
-                            <input name="password1" type="password" placeholder="Password" required="">
+                            <input id="pw1" name="password1" type="password" placeholder="Password" required="">
                             <i class="glyphicon glyphicon-lock"></i>
                         </div>
                         <div class="login-mail">
-                            <input name="password2" type="password" placeholder="Repeated password" required="">
+                            <input id="pw2" name="password2" type="password" placeholder="Repeat password" required="">
                             <i class="glyphicon glyphicon-lock"></i>
                         </div>
                         <a class="news-letter" href="#">
                             <label class="checkbox1">
-                                <input name="check-term" type="checkbox" name="checkbox"><i> </i>I agree with the terms</label>
+                                <input id="agree" name="check-term" type="checkbox" name="checkbox" required=""><i> </i>I agree with the terms</label>
                         </a>
 
                     </div>
@@ -215,6 +233,9 @@
                         </label>
                         <p>Already register?</p>
                         <a href="login" class="hvr-sweep-to-top">Login</a>
+                        <div class="col-md-12" style="margin-top:1em;display:flex;justify-content:center;padding:0">
+                            <div class="fb-login-button" data-width="1000px" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                        </div>
                     </div>
                     <div class="clearfix"> </div>
                 </form>
@@ -250,14 +271,25 @@
             </div>
         </div>
         <!-- //footer -->
-        <div id='user-drawer-content' class="">
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button'>My purchase</div>
+        <div class="modal fade" id="registeredModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Registration Complete</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Proceed to Login</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary login-now">Login Now</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button' class="logout-btn">Logout</div>
-            </div>
+            <!-- /.modal-dialog -->
         </div>
+        <!-- /.modal -->
         <!--custom js-->
         <script src="js/bizappmall.js"></script>
     </body>

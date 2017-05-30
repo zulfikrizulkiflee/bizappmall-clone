@@ -33,8 +33,6 @@
         <script src="js/pace.min.js"></script>
         <!--pagination-->
         <script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
-        <!--lazy load-->
-        <script src="js/jquery.lazyload.js" type="text/javascript"></script>
         <!--pagination-->
         <!-- for bootstrap working -->
         <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
@@ -64,7 +62,7 @@
                             <li>|</li>
                             <li>Follow us on <a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true"></i></a> <a href="#" target="_blank"><i class="fa fa-instagram header-icon" aria-hidden="true"></i></a></li>
                             <li>|</li>
-                            <li><a href="http://web.bizapp.my/" target="_blank"><b>Sell</b></a></li>
+                            <li><a href="register-seller" target="_self"><b>Sell</b></a></li>
                         </ul>
                     </div>
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
@@ -81,7 +79,10 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo '<li><a href="javascript:void(0)"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo "<li class='pipe'>|</li>";
+                                        echo '<li class="logout-btn"><a href="javascript:void(0)">Logout</a></li>';
+                                        echo "<input type='hidden' id='session-login' value='".$_SESSION['uid']."'>";
                                         echo "<li class='pipe'>|</li>";
                                     }else{
                                         echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
@@ -228,17 +229,19 @@
             </div>
         </div>
         <!-- //footer -->
-        <div id='user-drawer-content' class="">
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button'>My purchase</div>
-            </div>
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button' class="logout-btn">Logout</div>
-            </div>
-        </div>
+        <span id="userID" style="display:none"><?php if(isset($_SESSION['id'])){echo $_SESSION['uid'];}else{echo "0";} ?></span>
+        <span style="display:none" id="userCartData">
+            <?php
+                if(isset($_SESSION['username'])){
+                    echo $_SESSION['cart_data'];
+                }
+            ?>
+        </span>
+
         <!--custom js-->
         <script src="js/bizappmall.js"></script>
-
+        <!--lazy load-->
+        <script src="js/jquery.lazyload.js" type="text/javascript"></script>
     </body>
 
     </html>

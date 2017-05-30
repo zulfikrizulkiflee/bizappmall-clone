@@ -12,14 +12,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="Buy Your Favourite Products From Online Shop Owners" />
         <script type="application/x-javascript">
-            addEventListener("load", function() {
+            addEventListener("load", function () {
                 setTimeout(hideURLbar, 0);
             }, false);
 
             function hideURLbar() {
                 window.scrollTo(0, 1);
             }
-
         </script>
         <!-- //for-mobile-apps -->
         <link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
@@ -47,7 +46,6 @@
 -->
         <script>
             new WOW().init();
-
         </script>
         <!-- //animation-effect -->
         <link href='//fonts.googleapis.com/css?family=Cabin:400,500,600,700' rel='stylesheet' type='text/css'>
@@ -73,8 +71,7 @@
                         <div class="header-right2">
                             <div class="cart box_1">
                                 <a href="../checkout">
-                                    <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span>
-                                    </h3>
+                                    <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span></h3>
                                 </a>
 
                                 <div class="clearfix"> </div>
@@ -108,9 +105,7 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s">
-                                    <a href="../bizappmall"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a>
-                                </h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../bizappmall"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">
@@ -162,7 +157,7 @@
             <div class="col-xs-12 col-md-12 shop-profile product-grid-shadow">
 
                 <div class="col-xs-4 col-md-3" style="display:flex;justify-content:space-around;padding:0"><img class="shop_logo" src="../myimages/not_available.gif"></div>
-                <div class="col-xs-8 col-md-9"><span class="shop_name"></span></div>
+                <div class="col-xs-8 col-md-9"><span class="shop_name">NAMA</span></div>
 
                 <div class="col-xs-12 col-md-9" style="display:flex;justify-content:space-between;padding-top:0.5em">
 
@@ -242,8 +237,8 @@
             var code = $(location).attr('pathname');
             code = code.split('/');
             code = code[(code.length - 1)];
-            $.getJSON('http://mall.bizapp.my/get_category.php', function(dataMain) {
-                $.each(dataMain, function(i, data) {
+            $.getJSON('http://mall.bizapp.my/get_category.php', function (dataMain) {
+                $.each(dataMain, function (i, data) {
                     if (data.code == code) {
                         var desc = data.description_en;
                         desc = desc.replace(/---/g, '');
@@ -254,7 +249,6 @@
                     }
                 });
             });
-
         </script>
     </body>
 

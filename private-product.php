@@ -12,14 +12,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="Buy Your Favourite Products From Online Shop Owners" />
         <script type="application/x-javascript">
-            addEventListener("load", function() {
+            addEventListener("load", function () {
                 setTimeout(hideURLbar, 0);
             }, false);
 
             function hideURLbar() {
                 window.scrollTo(0, 1);
             }
-
         </script>
         <!-- //for-mobile-apps -->
         <link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
@@ -47,7 +46,6 @@
 -->
         <script>
             new WOW().init();
-
         </script>
         <!-- //animation-effect -->
         <link href='//fonts.googleapis.com/css?family=Cabin:400,500,600,700' rel='stylesheet' type='text/css'>
@@ -73,8 +71,7 @@
                         <div class="header-right2">
                             <div class="cart box_1">
                                 <a href="../checkout">
-                                    <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span>
-                                    </h3>
+                                    <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span></h3>
                                 </a>
 
                                 <div class="clearfix"> </div>
@@ -108,9 +105,7 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s">
-                                    <a href="../bizappmall"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a>
-                                </h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href=".."><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">
@@ -128,84 +123,63 @@
         </div>
         <!-- //header -->
 
-
-
+        <!--product-->
         <div class="container">
-
-            <div class="col-xs-12 col-md-12 promo-carousel" style="margin:0">
-                <div id="promo-carousel" class="carousel slide" data-ride="carousel" style="margin:0">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-
-                    </ol>
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" style="margin:0">
-
-                    </div>
-
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#promo-carousel" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#promo-carousel" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="container">
-            <div class="col-xs-12 col-md-12 shop-profile product-grid-shadow">
-
-                <div class="col-xs-4 col-md-3" style="display:flex;justify-content:space-around;padding:0"><img class="shop_logo" src="../myimages/not_available.gif"></div>
-                <div class="col-xs-8 col-md-9"><span class="shop_name"></span></div>
-
-                <div class="col-xs-12 col-md-9" style="display:flex;justify-content:space-between;padding-top:0.5em">
-
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333"><i class="fa fa-gift" aria-hidden="true" style="font-size:2em;color:#518115"></i>
-                        <p class="shop_products">Products 0</p>
-                    </div>
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333"><i class="fa fa-heart-o" aria-hidden="true" style="font-size:2em;color:red"></i>
-                        <p class="shop_divke">Like 0</p>
-                    </div>
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333">
-                        <p class="shop_rating"><i class="fa fa-star" aria-hidden="true" style="font-size:2em;color:gold"></i><i class="fa fa-star" aria-hidden="true" style="font-size:2em;color:gold"></i><i class="fa fa-star" aria-hidden="true" style="font-size:2em;color:gold"></i></p>Rating</div>
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333"><i class="fa fa-user-plus" aria-hidden="true" style="font-size:2em"></i>
-                        <p class="shop_joined">June 2016</p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="col-xs-12 col-md-12 shop-detail product-grid-shadow">
-                <h4>Shop Detail</h4>
-                <pre class="shop_detail">Not updated</pre>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="col-xs-12 col-md-12 suggest-products-container">
-                <div class="bizapp-sort-by-options">
-                    <a class="bizapp-sort-by-options__option option-selected" data-option="all" href="javascript:void(0)">ALL</a>
-                    <a class="bizapp-sort-by-options__option" data-option="latest" href="javascript:void(0)">LATEST</a>
-                    <a class="bizapp-sort-by-options__option" data-option="top" href="javascript:void(0)">TOP</a>
-                    <div class="bizapp-sort-by-options__option price-key" style="position: relative;">
-                        <span class="price-selection">PRICE</span>
-                        <div class="bizapp-dropdown-popover" style="visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2">
-                            <ul style="width:100%">
-                                <li class="dropdown-price price-low-high" data-option="lowhigh">PRICE : LOW TO HIGH <i class="fa fa-sort-amount-asc" aria-hidden="true"></i></li>
-                                <li class="dropdown-price price-high-low" data-option="highlow">PRICE : HIGH TO LOW <i class="fa fa-sort-amount-desc" aria-hidden="true"></i></li>
+            <div class="col-md-12 product-wrapper simpleCart_shelfItem">
+                <div class="col-xs-12 col-md-4 buffer">
+                    <div class="product-image-container">
+                        <div class="product-image-list">
+                            <ul class="thumb-img">
+                                <li><img src=""></li>
+                                <li><img src=""></li>
+                                <li><img src=""></li>
+                                <li><img src=""></li>
                             </ul>
+                        </div>
+                        <div class="product-image-view"><img src="" class="item_image"></div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 suggest-products-container">
+                        <h4 style="color:#333;border-bottom:1px solid lightgray;padding-bottom:0.4em;margin-bottom:0.5em;">Comments <span class="comment-number">(0)</span></h4>
+                        <ul class="product-comment-rating"></ul>
+                        <div class="input-group">
+                            <textarea class="form-control comment-area" rows="3"></textarea>
+                            <span class="input-group-btn">
+                    <button class="btn btn-default search-btn" type="button" style="width:5em;height:5.3em"><i class="fa fa-paper-plane" aria-hidden="true" style="font-size:2em"></i></button>
+                    </span>
                         </div>
                     </div>
                 </div>
-                <div class="row shop-product-list"></div>
+
+                <div class="col-xs-12 col-md-8 product-info-container">
+                    <div class="info-top">
+                        <ul class="product-info-top-list">
+                            <li><span class="item_name" style="display:inline-block;width:85%;word-wrap:break-word;padding:0;font-size:2em;"></span><span style="float:right"><a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true" style="font-size:2em !important;color:#3B5998"></i></a></span></li>
+                            <li style="font-size:0.8em"><span class="item_rating" style="color:gold"></span> <span>(1)</span><span style="float:right"><span class="item_like" style="font-size:1.3em"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="">0</span></li>
+                            <li style="margin-bottom:0.5em"><span class="item_pname"></span></span>
+                                </span>
+                            </li>
+                            <li class="product-tag-container" style="margin-bottom:0.5em"></li>
+                        </ul>
+                    </div>
+                    <div class="info-middle">
+                        <ul class="product-info-top-list">
+                            <li><pre class="item_detail">No detail available</pre></li>
+                        </ul>
+                    </div>
+                    <div class="info-bottom">
+                        <ul class="product-info-top-list">
+                            <li><span class="item_price" style="color:#f57400;font-size:2em;font-weight:bold;line-height:2em"></span><span style="float:right;padding-top: 0.65em;"><span class="item_pid"></span><span class="item_prodid"></span>
+                                <button class="item_add" style="font-size: 1.5em;background: #f57400;color: #fff;border: none;padding: 0.2em 0.4em;">Add To Cart</button>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-12 suggest-products-container">
+                <h4 style="color:#333;border-bottom:1px solid lightgray;padding-bottom:0.4em;margin-bottom:0.5em;">See Also</h4>
+                <div class="row suggest-product-list"></div>
             </div>
         </div>
 
@@ -236,14 +210,27 @@
             </div>
         </div>
         <!-- //footer -->
+        <!-- Static Modal -->
+        <div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="../myimages/ico/cart-added.png" style="height:80px;margin-top:25px;margin-bottom:25px" class="icon" />
+                            <h4>Item Added To Cart</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--custom js-->
         <script src="../js/bizappmall.js"></script>
         <script>
             var code = $(location).attr('pathname');
             code = code.split('/');
             code = code[(code.length - 1)];
-            $.getJSON('http://mall.bizapp.my/get_category.php', function(dataMain) {
-                $.each(dataMain, function(i, data) {
+            $.getJSON('http://mall.bizapp.my/get_category.php', function (dataMain) {
+                $.each(dataMain, function (i, data) {
                     if (data.code == code) {
                         var desc = data.description_en;
                         desc = desc.replace(/---/g, '');
@@ -254,7 +241,6 @@
                     }
                 });
             });
-
         </script>
     </body>
 

@@ -1,6 +1,16 @@
+.fb-page,
+.fb-page span,
+.fb-page span iframe[style] {
+    width: 100% !important;
+}
+
+
 /*mobile*/
 
 @media(max-width:600px) {
+    .history-select a {
+        font-size: 13px;
+    }
     .shop-detail-section {
         border-right: 0 !important;
     }
@@ -31,7 +41,7 @@
     #user-drawer-content:after {
         left: 45% !important;
     }
-    .carousel-inner > .item > img {
+    .carousel-inner>.item>img {
         height: 25vh !important;
     }
     .carousel-control {
@@ -75,8 +85,8 @@
         width: 49% !important;
         margin-bottom: 0.2em !important;
     }
-    .pagination > li > a,
-    .pagination > li > span {
+    .pagination>li>a,
+    .pagination>li>span {
         font-size: 1em !important;
         margin-left: 5px !important;
     }
@@ -185,6 +195,14 @@
 
 
 /*custom*/
+
+.shown {
+    display: block;
+}
+
+.hide-section {
+    display: none;
+}
 
 .search-popover {
     background: white;
@@ -370,12 +388,12 @@
     /*    object-fit: cover;*/
 }
 
-.carousel-inner > .item > img {
+.carousel-inner>.item>img {
     width: 100%;
     height: 36vh;
 }
 
-.carousel-inner > .item {
+.carousel-inner>.item {
     padding: 0 !important;
 }
 
@@ -692,9 +710,10 @@
     width: 40%;
     display: inline-block;
 */
+    padding-bottom: 0.5em;
     padding-left: 0;
     padding-right: 0;
-    border-right: 1px solid #999;
+    /*    border-bottom: 1px solid #999;*/
 }
 
 .shop-info-left {
@@ -725,18 +744,20 @@
 }
 
 .shop_logo {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-    border: 2px solid #f57400;
+    height: 135px;
+    width: 100%;
+    object-fit: contain !important;
+    /*    border-radius: 50%;*/
+    /*    border: 2px solid #f57400;*/
     object-fit: cover;
 }
 
 .shop_name {
-    float: right;
-    text-align: right;
-    margin-left: 0.5em;
-    font-size: 1.5em;
+    /*    float: right;*/
+    display: block;
+    text-align: center;
+    /*    margin-left: 0.5em;*/
+    font-size: 2em;
     color: #333;
 }
 
@@ -753,7 +774,7 @@
     font-size: 1em;
     border-radius: 3px;
     margin-right: 0 !important;
-    padding: 0 !important;
+    padding: 0.5em !important;
     margin-top: 0.5em;
 }
 
@@ -792,7 +813,7 @@
 .shop_detail {
     width: 100%;
     margin: 0 !important;
-    min-height: 31.3vh;
+    /*    min-height: 31.3vh;*/
     /* max-height: 37vh; */
     /* overflow: auto; */
     font-family: inherit;
@@ -801,7 +822,7 @@
     color: #2e2e2e;
     font-size: 1em;
     /* line-height: 1.7em; */
-    /* padding: 0 0 1em; */
+    /*    padding: 0.5em;*/
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;
@@ -1128,9 +1149,9 @@ ul.nav.navbar-nav li a {
     margin: 1em;
 }
 
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.active>a:focus {
     color: #01CFCF;
 }
 
@@ -1174,9 +1195,9 @@ a.simpleCart_empty {
     color: #999 !important;
 }
 
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.active>a:focus {
     background-color: transparent;
 }
 
@@ -1185,7 +1206,7 @@ a.simpleCart_empty {
     border: none;
 }
 
-.nav .open > a {
+.nav .open>a {
     color: #01CFCF;
 }
 
@@ -1230,20 +1251,20 @@ ul.multi-column-dropdown h6 {
     padding: 30px 30px;
 }
 
-.nav .open > a,
-.nav .open > a:hover,
-.nav .open > a:focus {
+.nav .open>a,
+.nav .open>a:hover,
+.nav .open>a:focus {
     background: none;
     border: none;
 }
 
-.navbar-default .navbar-nav > .open > a,
-.navbar-default .navbar-nav > .open > a:hover,
-.navbar-default .navbar-nav > .open > a:focus {
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.open>a:focus {
     background-color: transparent;
 }
 
-.nav > li > a:hover {
+.nav>li>a:hover {
     background: none;
     color: #01CFCF !important;
 }
@@ -1393,7 +1414,7 @@ ul li {
     line-height: 0px;
 }
 
-.nbs-flexisel-item > img {
+.nbs-flexisel-item>img {
     cursor: pointer;
     position: relative;
 }
@@ -1694,18 +1715,18 @@ a.shop-2:hover {
     width: 100%;
 }
 
-.grid-pro .grid-product figure:hover .grid-img + .grid-img {
+.grid-pro .grid-product figure:hover .grid-img+.grid-img {
     right: 100%;
 }
 
-.grid-pro .grid-product figure > a {
+.grid-pro .grid-product figure>a {
     display: block;
     float: left;
     width: 100%;
     z-index: 1;
 }
 
-.grid-pro .grid-product figure > a .grid-img {
+.grid-pro .grid-product figure>a .grid-img {
     width: 100%;
     line-height: 0;
     will-change: right;
@@ -1714,11 +1735,11 @@ a.shop-2:hover {
     transform: translateZ(0);
 }
 
-.grid-pro .grid-product figure > a .grid-img img {
+.grid-pro .grid-product figure>a .grid-img img {
     width: 100%;
 }
 
-.grid-pro .grid-product figure > a .grid-img + .grid-img {
+.grid-pro .grid-product figure>a .grid-img+.grid-img {
     position: absolute;
     top: 0;
     right: 0;
@@ -1728,7 +1749,7 @@ a.shop-2:hover {
     transition: right 0.7s cubic-bezier(0.75, 0, 0.175, 1), opacity 0.7s cubic-bezier(0.75, 0, 0.175, 1);
 }
 
-.grid-pro .grid-product figure > a .grid-img + .grid-img img {
+.grid-pro .grid-product figure>a .grid-img+.grid-img img {
     max-width: none;
 }
 
@@ -2573,7 +2594,7 @@ a.add-re:hover {
     outline: none;
     font-size: 0.9em;
     color: #999;
-    width: 96%;
+    width: 94%;
 }
 
 .login-do input[type="submit"] {
@@ -2642,7 +2663,7 @@ a.add-re:hover {
     border: 2px solid #E1DFDF;
 }
 
-.checkbox1 input + i:after {
+.checkbox1 input+i:after {
     content: '';
     background: url("../images/tick1.png") no-repeat 1px 2px;
     top: -1px;
@@ -2653,7 +2674,7 @@ a.add-re:hover {
     text-align: center;
 }
 
-.checkbox1 input + i:after {
+.checkbox1 input+i:after {
     position: absolute;
     opacity: 0;
     transition: opacity 0.1s;
@@ -2668,7 +2689,7 @@ a.add-re:hover {
     left: -9999px;
 }
 
-.checkbox1 input:checked + i:after {
+.checkbox1 input:checked+i:after {
     opacity: 1;
 }
 
@@ -2810,12 +2831,12 @@ a.add-re:hover {
     font-weight: 700;
 }
 
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
     padding: 8px;
     line-height: 1.42857143;
     vertical-align: top;

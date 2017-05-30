@@ -1,12 +1,20 @@
 <?php
     session_start();
     include("connection.php"); //Establishing connection with our database
+    if($_SERVER['SERVER_NAME']=="localhost"){
+        $home=$_SERVER['SERVER_NAME']."/Project BizApp/bizappmall";
+    }else if($_SERVER['SERVER_NAME']=="www.ansi.com.my"){
+        $home=$_SERVER['SERVER_NAME']."/bizappmall";
+    }else{
+        $home=$_SERVER['SERVER_NAME'];
+    }
+    
 
     if(isset($_SESSION['username'])){
-        header("location: ../");
+        header("Location: http://".$home);
     }
 
-    $error = ""; //Variable for storing our errors.
+    $error = false; //Variable for storing our errors.
     if(isset($_POST["submit"])){
         if(empty($_POST["username"]) || empty($_POST["password"])){
         $error = "Both fields are required.";
@@ -32,9 +40,9 @@
             if(mysqli_num_rows($result) == 1){
                 $login_user=$row['id'];
                 $_SESSION['id'] = $login_user; // Initializing Session
-                header("location: ../bizappmall"); // Redirecting To Other Page
+                header("location: http://".$home); // Redirecting To Other Page
             }else{
-                $error = "Incorrect username or password.";
+                $error = true;
             }
         }
     }
@@ -102,7 +110,7 @@
                             <li>|</li>
                             <li>Follow us on <a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true"></i></a> <a href="#" target="_blank"><i class="fa fa-instagram header-icon" aria-hidden="true"></i></a></li>
                             <li>|</li>
-                            <li><a href="http://web.bizapp.my/" target="_blank"><b>Sell</b></a></li>
+                            <li><a href="register-seller" target="_self"><b>Sell</b></a></li>
                         </ul>
                     </div>
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
@@ -119,7 +127,10 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo '<li><a href="javascript:void(0)"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo "<li class='pipe'>|</li>";
+                                        echo '<li class="logout-btn"><a href="javascript:void(0)">Logout</a></li>';
+                                        echo "<input type='hidden' id='session-login' value='".$_SESSION['uid']."'>";
                                         echo "<li class='pipe'>|</li>";
                                     }else{
                                         echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
@@ -193,6 +204,11 @@
 
                     <div class="clearfix"> </div>
                 </form>
+                <?php if($error){ ?>
+                    <script>
+                        alert("Username/Password cannot be verified");
+                    </script>
+                    <?php } ?>
 
             </div>
         </div>

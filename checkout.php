@@ -12,13 +12,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="Buy Your Favourite Products From Online Shop Owners" />
         <script type="application/x-javascript">
-            addEventListener("load", function () {
+            addEventListener("load", function() {
                 setTimeout(hideURLbar, 0);
             }, false);
 
             function hideURLbar() {
                 window.scrollTo(0, 1);
             }
+
         </script>
         <!-- //for-mobile-apps -->
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
@@ -46,6 +47,7 @@
 -->
         <script>
             new WOW().init();
+
         </script>
         <!-- //animation-effect -->
         <link href='//fonts.googleapis.com/css?family=Cabin:400,500,600,700' rel='stylesheet' type='text/css'>
@@ -63,6 +65,7 @@
                 width: 100%;
                 height: 100%;
             }
+
         </style>
     </head>
 
@@ -77,14 +80,15 @@
                             <li>|</li>
                             <li>Follow us on <a href="https://www.facebook.com/bizappmalaysia" target="_blank"><i class="fa fa-facebook-square header-icon" aria-hidden="true"></i></a> <a href="#" target="_blank"><i class="fa fa-instagram header-icon" aria-hidden="true"></i></a></li>
                             <li>|</li>
-                            <li><a href="http://web.bizapp.my/" target="_blank"><b>Sell</b></a></li>
+                            <li><a href="register-seller" target="_self"><b>Sell</b></a></li>
                         </ul>
                     </div>
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
                         <div class="header-right2">
                             <div class="cart box_1">
                                 <a href="checkout">
-                                    <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span></h3>
+                                    <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span>
+                                    </h3>
                                 </a>
 
                                 <div class="clearfix"> </div>
@@ -94,7 +98,10 @@
                             <ul>
                                 <?php
                                     if(isset($_SESSION['username'])){
-                                        echo '<li><a tabindex="0" id="user-drawer" data-toggle="popover" data-trigger="focus" data-placement="bottom"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo '<li><a href="javascript:void(0)"><i class="fa fa-user-circle-o header-icon" aria-hidden="true"></i> '.$_SESSION['username'].'</a></li>';
+                                        echo "<li class='pipe'>|</li>";
+                                        echo '<li class="logout-btn"><a href="javascript:void(0)">Logout</a></li>';
+                                        echo "<input type='hidden' id='session-login' value='".$_SESSION['uid']."'>";
                                         echo "<li class='pipe'>|</li>";
                                     }else{
                                         echo "<li><i class='glyphicon glyphicon-log-in'></i><a href='login'>Login</a></li>";
@@ -115,7 +122,9 @@
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
-                                <h1 class="animated wow pulse" data-wow-delay=".5s"><a href="../bizappmall"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a></h1>
+                                <h1 class="animated wow pulse" data-wow-delay=".5s">
+                                    <a href="../bizappmall"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a>
+                                </h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
                                 <div class="input-group">
@@ -132,6 +141,28 @@
             </div>
         </div>
         <!-- //header -->
+
+        <div class="container" style="margin-bottom:1em">
+            <div class="col-xs-4 col-md-4 panel panel-primary panel-step" style="padding:0">
+                <div class="panel-heading">STEP 1</div>
+                <div class="panel-body" style="padding:1em">
+                    Click on shop name to choose which shop you want to checkout.
+                </div>
+            </div>
+            <div class="col-xs-4 col-md-4 panel panel-success panel-step" style="padding:0">
+                <div class="panel-heading">STEP 2</div>
+                <div class="panel-body" style="padding:1em">
+                    View your items, select, remove or change its quantity before checkout.
+                </div>
+            </div>
+            <div class="col-xs-4 col-md-4 panel panel-info panel-step" style="padding:0">
+                <div class="panel-heading">STEP 3</div>
+                <div class="panel-body" style="padding:1em">
+                    Click "Proceed to payment" to continue.
+                </div>
+            </div>
+        </div>
+
 
         <!-- container -->
         <div class="container checkout-wrapper" id="accordion" role="tablist" aria-multiselectable="true">

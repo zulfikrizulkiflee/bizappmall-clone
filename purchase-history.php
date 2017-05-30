@@ -5,7 +5,7 @@
     <html>
 
     <head>
-        <link rel="shortcut icon" href="../myimages/ico/favicon.png">
+        <link rel="shortcut icon" href="myimages/ico/favicon.png">
         <title>BizApp-Mall | Buy Your Favourite Products From Online Shop Owners</title>
         <!-- for-mobile-apps -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,28 +22,28 @@
 
         </script>
         <!-- //for-mobile-apps -->
-        <link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-        <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
         <!-- js -->
-        <script src="../js/jquery.min.js"></script>
+        <script src="js/jquery.min.js"></script>
         <!-- //js -->
         <!-- cart -->
-        <script src="../js/simpleCart.min.js"></script>
+        <script src="js/simpleCart.min.js"></script>
         <!-- cart -->
-        <!--pagination-->
-        <script src="../js/jquery.twbsPagination.js" type="text/javascript"></script>
-        <!--pagination-->
         <!--pace-->
-        <script src="../js/pace.min.js"></script>
+        <script src="js/pace.min.js"></script>
+        <!--pagination-->
+        <script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
         <!--lazy load-->
-        <script src="../js/jquery.lazyload.js" type="text/javascript"></script>
+        <script src="js/jquery.lazyload.js" type="text/javascript"></script>
+        <!--pagination-->
         <!-- for bootstrap working -->
-        <script type="text/javascript" src="../js/bootstrap-3.1.1.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
         <!-- //for bootstrap working -->
         <!-- animation-effect -->
         <!--
-        <link href="../css/animate.min.css" rel="stylesheet">
-        <script src="../js/wow.min.js"></script>
+        <link href="css/animate.min.css" rel="stylesheet">
+        <script src="js/wow.min.js"></script>
 -->
         <script>
             new WOW().init();
@@ -52,7 +52,21 @@
         <!-- //animation-effect -->
         <link href='//fonts.googleapis.com/css?family=Cabin:400,500,600,700' rel='stylesheet' type='text/css'>
         <link href='//fonts.googleapis.com/css?family=Lato:400,100,300,700,900' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="../css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <style>
+            .headerRow {
+                display: none !important;
+            }
+            
+            .cart-frame {
+                display: block;
+                border: none;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -72,7 +86,7 @@
                     <div class="header-right animated wow fadeInRight" data-wow-delay=".5s">
                         <div class="header-right2">
                             <div class="cart box_1">
-                                <a href="../checkout">
+                                <a href="checkout">
                                     <h3><i class="fa fa-shopping-cart header-icon cart-icon" aria-hidden="true"></i><span class="badge"><span id="simpleCart_quantity" class="simpleCart_quantity"></span></span>
                                     </h3>
                                 </a>
@@ -109,7 +123,7 @@
                         <div class="navbar-header nav_2">
                             <div class="navbar-brand logo-nav-left ">
                                 <h1 class="animated wow pulse" data-wow-delay=".5s">
-                                    <a href="../bizappmall"><img src="../myimages/logo.svg" id="logo-img"><span>Mall</span></a>
+                                    <a href="../bizappmall"><img src="myimages/logo.svg" id="logo-img"><span>Mall</span></a>
                                 </h1>
                             </div>
                             <div class="col-xs-12 col-md-6 navbar-search">
@@ -128,84 +142,50 @@
         </div>
         <!-- //header -->
 
-
-
-        <div class="container">
-
-            <div class="col-xs-12 col-md-12 promo-carousel" style="margin:0">
-                <div id="promo-carousel" class="carousel slide" data-ride="carousel" style="margin:0">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-
-                    </ol>
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" style="margin:0">
-
-                    </div>
-
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#promo-carousel" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#promo-carousel" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="container">
-            <div class="col-xs-12 col-md-12 shop-profile product-grid-shadow">
-
-                <div class="col-xs-4 col-md-3" style="display:flex;justify-content:space-around;padding:0"><img class="shop_logo" src="../myimages/not_available.gif"></div>
-                <div class="col-xs-8 col-md-9"><span class="shop_name"></span></div>
-
-                <div class="col-xs-12 col-md-9" style="display:flex;justify-content:space-between;padding-top:0.5em">
-
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333"><i class="fa fa-gift" aria-hidden="true" style="font-size:2em;color:#518115"></i>
-                        <p class="shop_products">Products 0</p>
-                    </div>
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333"><i class="fa fa-heart-o" aria-hidden="true" style="font-size:2em;color:red"></i>
-                        <p class="shop_divke">Like 0</p>
-                    </div>
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333">
-                        <p class="shop_rating"><i class="fa fa-star" aria-hidden="true" style="font-size:2em;color:gold"></i><i class="fa fa-star" aria-hidden="true" style="font-size:2em;color:gold"></i><i class="fa fa-star" aria-hidden="true" style="font-size:2em;color:gold"></i></p>Rating</div>
-                    <div class="col-xs-6 col-md-2" style="text-align:center;color:#333"><i class="fa fa-user-plus" aria-hidden="true" style="font-size:2em"></i>
-                        <p class="shop_joined">June 2016</p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="col-xs-12 col-md-12 shop-detail product-grid-shadow">
-                <h4>Shop Detail</h4>
-                <pre class="shop_detail">Not updated</pre>
-            </div>
-        </div>
-
+        <!-- container -->
         <div class="container">
             <div class="col-xs-12 col-md-12 suggest-products-container">
-                <div class="bizapp-sort-by-options">
-                    <a class="bizapp-sort-by-options__option option-selected" data-option="all" href="javascript:void(0)">ALL</a>
-                    <a class="bizapp-sort-by-options__option" data-option="latest" href="javascript:void(0)">LATEST</a>
-                    <a class="bizapp-sort-by-options__option" data-option="top" href="javascript:void(0)">TOP</a>
-                    <div class="bizapp-sort-by-options__option price-key" style="position: relative;">
-                        <span class="price-selection">PRICE</span>
-                        <div class="bizapp-dropdown-popover" style="visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2">
-                            <ul style="width:100%">
-                                <li class="dropdown-price price-low-high" data-option="lowhigh">PRICE : LOW TO HIGH <i class="fa fa-sort-amount-asc" aria-hidden="true"></i></li>
-                                <li class="dropdown-price price-high-low" data-option="highlow">PRICE : HIGH TO LOW <i class="fa fa-sort-amount-desc" aria-hidden="true"></i></li>
-                            </ul>
+                <div class="bizapp-sort-by-options history-select">
+                    <a class="bizapp-sort-by-options__option option-selected" data-option="topay-list" href="javascript:void(0)">TO PAY</a>
+                    <a class="bizapp-sort-by-options__option" data-option="toreceive-list" href="javascript:void(0)">TO BE RECEIVED</a>
+                    <a class="bizapp-sort-by-options__option" data-option="completed-list" href="javascript:void(0)">COMPLETED</a>
+                </div>
+                <div class="purchase-history-list">
+                    <div class="history-section topay-list shown">
+                        <!--
+                        <div class="col-md-12" style="padding:0">
+                            <div class="col-md-12 order-id" style="padding:0"><span>nama kedai</span><span style="float:right;text-align:right">Order ID: 235</span></div>
+                            <div class="col-xs-8 col-md-10" style="padding:0">
+                                <div style="display:inline-block;position:relative;border:1px solid lightgray;width:100px;height:100px"><img src="http://corrad.visionice.net/bizapp/upload/product/7935823675BNIxqG0hriV.jpg" width="100%" height="100%" class="lazy">
+                                    <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x1</div>
+                                </div>
+                                <div style="display:inline-block;position:relative;border:1px solid lightgray;width:100px;height:100px"><img src="http://corrad.visionice.net/bizapp/upload/product/7935823675BNIxqG0hriV.jpg" width="100%" height="100%" class="lazy">
+                                    <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x1</div>
+                                    <div style="position:absolute;bottom:0;padding:3px;background:orange;color:white;">RM24.00</div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-md-2" style="text-align:center;padding-top:40px;color:orange">RM24.00</div>
                         </div>
+-->
+                    </div>
+                    <div class="history-section toreceive-list hide-section"></div>
+                    <div class="history-section completed-list hide-section"></div>
+                </div>
+            </div>
+        </div>
+        <!-- //container -->
+
+        <div class="modal" id="detailModal" style="top:30%">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        Content for the dialog / modal goes here.
                     </div>
                 </div>
-                <div class="row shop-product-list"></div>
             </div>
         </div>
 
@@ -237,25 +217,7 @@
         </div>
         <!-- //footer -->
         <!--custom js-->
-        <script src="../js/bizappmall.js"></script>
-        <script>
-            var code = $(location).attr('pathname');
-            code = code.split('/');
-            code = code[(code.length - 1)];
-            $.getJSON('http://mall.bizapp.my/get_category.php', function(dataMain) {
-                $.each(dataMain, function(i, data) {
-                    if (data.code == code) {
-                        var desc = data.description_en;
-                        desc = desc.replace(/---/g, '');
-                        if (desc == "TERBUKA") {
-                            desc = "MISC";
-                        }
-                        $('title').html(desc + ' | BizApp-Mall');
-                    }
-                });
-            });
-
-        </script>
+        <script src="js/bizappmall.js"></script>
     </body>
 
     </html>

@@ -1,5 +1,5 @@
 <?php
-    include("session.php"); 
+    include("session.php");
 ?>
     <!DOCTYPE html>
     <html>
@@ -29,13 +29,13 @@
         <!-- cart -->
         <script src="js/simpleCart.min.js"></script>
         <!-- cart -->
-        <!--pagination-->
-        <script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
-        <!--pagination-->
         <!--pace-->
         <script src="js/pace.min.js"></script>
+        <!--pagination-->
+        <script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
         <!--lazy load-->
         <script src="js/jquery.lazyload.js" type="text/javascript"></script>
+        <!--pagination-->
         <!-- for bootstrap working -->
         <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
         <!-- //for bootstrap working -->
@@ -122,18 +122,101 @@
             </div>
         </div>
         <!-- //header -->
+        <!--banner-->
+        <div class="banner-top">
+            <div class="container">
+                <h2 class="animated wow fadeInLeft" data-wow-delay=".5s">Register As Seller</h2>
+                <h3 class="animated wow fadeInRight" data-wow-delay=".5s"><a href="../bizappmall">Home</a><label>/</label>Register As Seller</h3>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <!-- contact -->
+        <div class="login">
+            <div class="container">
+                <form id="register-form" class="product-grid-shadow" action="" method="post">
+                    <div class="col-md-6 login-do1 animated wow fadeInLeft" data-wow-delay=".5s">
+                        <div class="login-mail">
+                            <input name="name" type="text" placeholder="Name" required="">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input name="ic" type="text" placeholder="IC Number" required="">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input name="email" type="text" placeholder="Email" required="">
+                            <i class="glyphicon glyphicon-envelope"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input name="username" type="text" placeholder="Username" required="">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input id="pw1" name="password1" type="password" placeholder="Password" required="">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input id="pw2" name="password2" type="password" placeholder="Repeat password" required="">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input id="address1" name="address1" type="text" placeholder="Address1" required="">
+                            <i class="glyphicon glyphicon-home"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input id="address2" name="address2" type="text" placeholder="Address2" required="">
+                            <i class="glyphicon glyphicon-home"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input id="address3" name="address3" type="text" placeholder="Address3" required="">
+                            <i class="glyphicon glyphicon-home"></i>
+                        </div>
+                        <div class="login-mail">
+                            <input id="postcode" name="postcode" type="text" placeholder="Postcode" required="">
+                            <i class="glyphicon glyphicon-home"></i>
+                        </div>
+                        <div class="login-mail" style="padding:0 0.5em">
+                            <select class="form-control" style="border:none;border-radius:0;box-shadow:none;padding:0.5em 1em">
+                                <option>Select state</option>
+                                <option value="1">Johor</option>
+                                <option value="2">Kedah</option>
+                                <option value="3">Kelantan</option>
+                                <option value="4">Melaka</option>
+                                <option value="5">Negeri Sembilan</option>
+                                <option value="6">Pahang</option>
+                                <option value="7">Pulau Pinang</option>
+                                <option value="8">Perak</option>
+                                <option value="9">Perlis</option>
+                                <option value="10">Selangor</option>
+                                <option value="11">Terenganu</option>
+                                <option value="12">Sabah</option>
+                                <option value="13">Sarawak</option>
+                                <option value="14">Wilayah Persekutuan Kuala Lumpur</option>
+                                <option value="15">Wilayah Persekutuan Labuan</option>
+                                <option value="16">Wilayah Persekutuan Putrajaya</option>
+                            </select>
+                        </div>
+                        <a class="news-letter" href="#">
+                            <label class="checkbox1">
+                                <input id="agree" name="check-term" type="checkbox" name="checkbox" required=""><i> </i>I agree with the terms</label>
+                        </a>
 
-        <!--discover-->
-        <div class="container">
-            <div class="col-md-12 discover">
-                <div class="row category-inside-list">
-                </div>
+                    </div>
+                    <div class="col-md-6 login-do animated wow fadeInRight" data-wow-delay=".5s">
+                        <label class="hvr-sweep-to-top login-sub">
+                            <input name="submit" type="submit" value="Submit">
+                        </label>
+                        <p>Already register?</p>
+                        <a href="login" class="hvr-sweep-to-top">Login</a>
+                        <div class="col-md-12" style="margin-top:1em;display:flex;justify-content:center;padding:0">
+                            <div class="fb-login-button" data-width="1000px" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </form>
             </div>
-            <div class="container navigation">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="pagination"></ul>
-                </nav>
-            </div>
+
+
         </div>
 
         <!-- footer -->
@@ -163,33 +246,27 @@
             </div>
         </div>
         <!-- //footer -->
-        <div id='user-drawer-content' class="">
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button'>My purchase</div>
+        <div class="modal fade" id="registeredModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Registration Complete</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Proceed to Login</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary login-now">Login Now</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
-            <div class="drawer-btn-container">
-                <div id='user-drawer-button' class="logout-btn">Logout</div>
-            </div>
+            <!-- /.modal-dialog -->
         </div>
+        <!-- /.modal -->
         <!--custom js-->
         <script src="js/bizappmall.js"></script>
-        <script>
-            var code = $(location).attr('pathname');
-            code = code.split('/');
-            code = code[(code.length - 1)];
-            $.getJSON('http://mall.bizapp.my/get_category.php', function (dataMain) {
-                $.each(dataMain, function (i, data) {
-                    if (data.code == code) {
-                        var desc = data.description_en;
-                        desc = desc.replace(/---/g, '');
-                        if (desc == "TERBUKA") {
-                            desc = "MISC";
-                        }
-                        $('title').html(desc + ' | BizApp-Mall');
-                    }
-                });
-            });
-        </script>
     </body>
 
     </html>

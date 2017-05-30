@@ -17,6 +17,7 @@
         $_SESSION['address3']=$row['address3'];
         $_SESSION['postcode']=$row['postcode'];
         $_SESSION['state']=$row['state'];
+        $_SESSION['cart_data']=$row['cart_data'];
 //        header("Location: ../");
     }
 ?>

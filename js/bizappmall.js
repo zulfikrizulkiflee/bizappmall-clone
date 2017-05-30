@@ -8,31 +8,47 @@ var current_page = $(location).attr('pathname');
 current_page = current_page.split('/');
 var page_name = current_page[(current_page.length - 2)];
 
+var userID = 0;
+
 $(function () {
-    $("img.item_image").lazyload({
-        effect: "fadeIn"
+    $("img.lazy").lazyload({
+        effect: "fadeIn",
+        threshold: 200
+    }).removeClass("lazy");
+    $(document).ajaxStop(function () {
+        $("img.lazy").lazyload({
+            effect: "fadeIn",
+            threshold: 200
+        }).removeClass("lazy");
     });
 });
 
 var appname = $(location).attr('hostname');
 
-var domainname = 'http://www.ansi.com.my';
+//var domainname = 'http://' + appname;
+var domainname = 'http://www.bizappmall.com';
 
 var page = $(location).attr('pathname');
 page = page.split('/');
 if (appname == "localhost") {
     var home = '/' + page[1] + '/' + page[2];
-} else {
+    var logout = home + '/logout.php';
+} else if (appname == "www.ansi.com.my") {
     var home = '/' + page[1];
+    var logout = home + '/logout.php';
+} else {
+    var home = domainname;
+    var logout = domainname + '/logout.php';
 }
 
-var logout = home + '/logout.php';
-console.log(logout);
+
+//console.log(logout);
 page = page[(page.length - 1)];
 console.log(page);
 
 $('a[href="login"]').attr('href', home + '/login');
 $('a[href="register"]').attr('href', home + '/register');
+$('a[href="register-seller"]').attr('href', home + '/register-seller');
 
 $('.logo-nav-left a').attr('href', home);
 
@@ -68,7 +84,7 @@ window.onload = function () {
 //var userdrw_width = ($('.header-right1').width() / 2) + $('.container').css('margin-right') + $('.header-right2').width();
 
 //$('#user-drawer-content').css('right', userdrw_width + 'px');
-var drawer_content = '<ul id="popover-content" class="list-group" style="display: none"> <a href=""><li id="user-drawer-button">My purchase</li></a><a href="' + logout + '"><li id="user-drawer-button" class="logout-btn" style="color:#29ABE2">Logout</li></a> </ul>';
+var drawer_content = '<ul id="popover-content" class="list-group" style="display: none"> <a href=""><li id="user-drawer-button">My purchase</li></a><a href="javascript:void(0)" id="action-logout"><li id="user-drawer-button" class="logout-btn" style="color:#29ABE2">Logout</li></a> </ul>';
 $('body').append(drawer_content);
 
 $('[data-toggle="popover"]').popover({
@@ -76,6 +92,15 @@ $('[data-toggle="popover"]').popover({
     content: function () {
         return $('#popover-content').html();
     }
+});
+
+$('.logout-btn').on('click', function () {
+    $.get(home + '/get_user_cart.php?action=update&uid=' + userID + '&cart_data=' + decodeURIComponent(localStorage.getItem(appname + 'simpleCart_items')), function (data) {
+        console.log(data);
+    });
+    localStorage.removeItem(appname + 'simpleCart_items');
+    localStorage.setItem(appname + '_userID', '0');
+    window.open(home + '/logout.php', '_self');
 });
 
 //$('#user-drawer').on('click', function () {
@@ -198,7 +223,288 @@ function generateFooterCategoryList() {
     });
 }
 
+if (page_name == "private") {
+
+    $(document).ready(function () {
+        for (var i = 0; i < 1; i++) {
+            $('<div class="item" style="margin:0"> <a href="#"><img class="promo-carousel-img" src="../myimages/banner/raya.jpg" alt="BizApp Raya"></a> </div>').appendTo('.carousel-inner');
+            $('<li data-target="#promo-carousel" data-slide-to="' + i + '"></li>').appendTo('.carousel-indicators')
+
+        }
+        $('.item').first().addClass('active');
+        $('.carousel-indicators > li').first().addClass('active');
+        $('#promo-carousel').carousel();
+    });
+
+
+    $(window).load(function () {
+        for (i = 0; i < 3; i++) {
+            var str = '<div class="item"> <a href="#"><img class="promo-carousel-img" src="../myimages/banner/raya.jpg" alt="BizApp Raya"></a> </div>';
+            $('.carousel-inner').append(str);
+        }
+    })
+
+
+    //get discover products
+    var pid = $(location).attr('pathname');
+    pid = pid.split('/');
+    pid = pid[(pid.length - 1)];
+    getShopDetail(pid);
+    getProductShop(pid, 'all');
+
+    $('.logo-nav-left a').attr('href', home + '/private/' + pid);
+
+    var product_count = 0;
+
+    $('.price-key').on('mouseover', function () {
+        $('.bizapp-dropdown-popover').attr('style', 'visibility:visible;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2');
+    });
+
+    window.onmouseover = function (e) {
+        if (e.target.className == "bizapp-sort-by-options__option price-key" || e.target.className == "dropdown-price price-low-high" || e.target.className == "dropdown-price price-high-low" || e.target.className == "bizapp-sort-by-options__option price-key option-selected" || e.target.className == "price-selection") {} else {
+            $('.bizapp-dropdown-popover').attr('style', 'visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2');
+        }
+    };
+
+    $('.bizapp-sort-by-options__option').each(function () {
+        $(this).on('click', function () {
+            $('.bizapp-sort-by-options__option').each(function () {
+                if ($(this).hasClass('option-selected')) {
+                    $(this).removeClass('option-selected');
+                }
+            });
+            $(this).addClass('option-selected');
+            var option = $(this).attr('data-option');
+            if (option != undefined) {
+                $('.price-selection').text('PRICE');
+                getProductShop(pid, option);
+            }
+
+        });
+    });
+
+    $('.dropdown-price').each(function () {
+        $(this).on('click', function () {
+            var text = '';
+            var option = $(this).attr('data-option');
+
+            if (option == "lowhigh") {
+                text = 'PRICE <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>';
+            } else if (option == "highlow") {
+                text = 'PRICE <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>';
+            }
+            $('.price-selection').html(text);
+            getProductShop(pid, option);
+        });
+    });
+
+    function getShopDetail(pid) {
+        $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + pid + '&order=shop_detail', function (data) {
+            console.log(data);
+            $('.shop_name').html(data[0].nama);
+            var shop_img = link_shop + data[0].attachmentphoto;
+            var shop_logo = link_shop + data[0].attachmentlogo;
+            $('.shop_logo').attr('src', shop_logo);
+            if ($('.shop_logo').attr('src') == link_shop) {
+                $('.shop_logo').attr('src', shop_img);
+                if ($('.shop_logo').attr('src') == link_shop) {
+                    $('.shop_logo').attr('src', '../' + unavailable);
+                }
+            }
+            var url_str = window.location.href;
+            var title_str = data[0].nama + '@bizapp-mall';
+            var description_str = 'Let\'s see my shop at BizApp-Mall';
+            var image_str = 'http://corrad.visionice.net/bizapp/upload/profile/' + shop_img;
+
+            $('.fb-share').on('click', function () {
+                window.open('https://www.facebook.com/sharer/sharer.php?u=' + url_str + '&picture=' + image_str + '&title=' + title_str + '&caption=www.ansi.com.my/bizappmall&description=' + description_str, 'name', 'height=200,width=150');
+            });
+            $('.tweet-share').on('click', function () {
+                window.open('http://twitter.com/share?text=' + title_str + ' ' + description_str + ' @&url=' + url_str + '&hashtags=bizappmall,' + dataShop[0].nama, 'name', 'height=500,width=800');
+            });
+        });
+    }
+
+    function getProductShop(pid, order) {
+        $('.shop-product-list').html('');
+        $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + pid + '&order=' + order, function (data) {
+            product_count = data.length;
+            $('.shop_products').html("Product " + product_count);
+            $.each(data, function (i, data) {
+                var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/private-product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
+                $('.shop-product-list').append(top_str);
+                var selector = '.item_like_' + data.id;
+                getLikeNumber("get", "product", selector, data.id);
+            });
+            var t = 0; // the height of the highest element (after the function runs)
+            var t_elem; // the highest element (after the function runs)
+            $('.product-grid-wrapper').each(function () {
+                $this = $(this);
+                if ($this.outerHeight() > t) {
+                    t_elem = this;
+                    t = $this.outerHeight();
+                }
+            });
+            $('.product-grid-wrapper').attr('style', 'height:' + t + 'px');
+            var f = 0; // the height of the highest element (after the function runs)
+            var f_elem; // the highest element (after the function runs)
+            $('.product-grid .item_name').each(function () {
+                $this = $(this);
+                if ($this.outerHeight() > f) {
+                    f_elem = this;
+                    f = $this.outerHeight();
+                }
+            });
+            $('.product-grid .item_name').attr('style', 'height:' + f + 'px');
+        });
+    }
+}
+
+if (page_name == "private-product") {
+    //get discover products
+    var code = $(location).attr('pathname');
+    code = code.split('/');
+    code = code[(code.length - 1)];
+    getProduct(code);
+
+    function getProduct(code) {
+        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + code, function (data) {
+            console.log(data);
+            var pid = data[0].pid;
+            var shop_logo = '';
+            var shop_img = '';
+
+            $('.logo-nav-left a').attr('href', home + '/private/' + pid);
+
+            $.each(data, function (i, data) {
+                var prod_detail = data.productdesc;
+                if (prod_detail.length != 0) {
+                    $('.item_detail').html(prod_detail);
+                } else {
+                    $('.item_detail').html("No detail available");
+                }
+                var star = '<i class="fa fa-star" aria-hidden="true"></i>';
+                $('.item_name').html(data.productname);
+                $('.item_price').html('RM' + data.price);
+                $('.item_rating').html(star.repeat(5));
+                $('.item_pid').html(data.pid);
+                $('.item_prodid').html(data.id);
+                $('.item_pname').html('<a href="' + home + '/shop/' + data.pid + '" style="color:#f57400"><img class="shop-logo" src="" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + data.nama + '</a>');
+                $('.product-image-container .item_image').attr('src', link_product + data.attachment);
+
+                if (data.attachment != null) {
+                    $('.product-image-list ul li:nth-child(1)').html('<img src="' + link_product + data.attachment + '">');
+                }
+                if (data.attachmentweb1 != null) {
+                    $('.product-image-list ul li:nth-child(2)').html('<img src="' + link_product + data.attachmentweb1 + '">');
+                }
+                if (data.attachmentweb2 != null) {
+                    $('.product-image-list ul li:nth-child(3)').html('<img src="' + link_product + data.attachmentweb2 + '">');
+                }
+                if (data.attachmentweb3 != null) {
+                    $('.product-image-list ul li:nth-child(4)').html('<img src="' + link_product + data.attachmentweb3 + '">');
+                }
+
+                $.getJSON('http://mall.bizapp.my/get_category.php', function (dataMain) {
+                    $.each(dataMain, function (i, dataMain) {
+                        if (dataMain.code == data.productcategorycode) {
+                            var desc = dataMain.description_en;
+                            desc = desc.replace(/---/g, '');
+                            if (desc == "TERBUKA") {
+                                desc = "MISC";
+                            }
+                            desc = desc.toLowerCase();
+                            var cat_tag = '<a href="' + home + '/category/' + data.productcategorycode + '"><span class="product-tag label label-default">#' + desc + '</span></a>';
+                            var brand_tag = '';
+
+                            if (data.productbrand.length != 0) {
+                                brand_tag = '<a href="' + home + '/search/' + data.productbrand.toLowerCase() + '"><span class="product-tag label label-default">#' + data.productbrand.toLowerCase() + '</span></a>';
+                            }
+
+                            $('.product-tag-container').append(cat_tag + brand_tag);
+                        }
+                    });
+                });
+
+
+            });
+
+            $.getJSON('http://mall.bizapp.my/get_shop.php?order=shop_detail&id=' + pid, function (dataShop) {
+                console.log(dataShop);
+                shop_img = link_shop + dataShop[0].attachmentphoto;
+                shop_logo = link_shop + dataShop[0].attachmentlogo;
+                $('.shop-logo').attr('src', shop_logo);
+                if ($('.shop-logo').attr('src') == link_shop) {
+                    $('.shop-logo').attr('src', shop_img);
+                    if ($('.shop-logo').attr('src') == link_shop) {
+                        console.log(unavailable);
+                        $('.shop-logo').attr('src', '../' + unavailable);
+                    }
+                }
+            });
+
+            var count = 4;
+            $('.product-image-container img').each(function () {
+                if ($(this).attr('src') == link_product) {
+                    $(this).parent().remove();
+                    count--;
+                }
+                if (count <= 1) {
+                    $('.product-image-list').css('display', 'none');
+                }
+            });
+
+            $('.product-image-container ul li:first-child').css('border', '2px solid #f57400');
+
+            $('.product-image-container ul li').each(function () {
+                $(this).on('click', function () {
+                    $('.product-image-container .item_image').attr('src', $(this).children('img').attr('src'));
+                    $('.product-image-container ul li').each(function () {
+                        $(this).css('border', '1px solid lightgray');
+                    });
+                    $(this).css('border', '2px solid #f57400');
+                });
+            });
+            var img_cont_height = $('.product-image-container').height() + 18;
+            //            $('.product-info-container').attr('style', 'height:' + img_cont_height + 'px');
+        });
+
+    }
+
+    //get top products
+
+    $(function () {
+        $('#processing-modal').on('show.bs.modal', function () {
+            var myModal = $(this);
+            clearTimeout(myModal.data('hideInterval'));
+            myModal.data('hideInterval', setTimeout(function () {
+                myModal.modal('hide');
+            }, 1000));
+        });
+    });
+
+}
+
+
 if (page == '') {
+    userID = $('#userID').text();
+    //    alert(userID);
+    if (userID != "0") {
+        localStorage.setItem(appname + '_userID', userID);
+        $.getJSON(home + '/get_user_cart.php?action=read&uid=' + userID, function (dataCart) {
+            var cartLength = JSON.parse(dataCart[0].cart_data);
+            var numItem = 0;
+            $.each(cartLength, function (i, cartLength) {
+                numItem = numItem + cartLength.quantity;
+            });
+            $('.simpleCart_quantity').html(numItem);
+            localStorage.setItem(appname + 'simpleCart_items', dataCart[0].cart_data);
+        });
+    }
+
+    var cart_data = $('#userCartData').text();
+    console.log(cart_data);
+
     //get category JSON
     generateCategoryList();
 
@@ -211,7 +517,7 @@ if (page == '') {
                 if (desc == "TERBUKA") {
                     desc = "MISC";
                 } else {
-                    var cat_str = '<a href="category/' + data.code + '"><div class="col-xs-4 col-md-2 category-grid"><div><img class="category-icon" src="myimages/category/' + iconArr[i] + '.png"></div>' + desc + '</div></a>';
+                    var cat_str = '<a href="category/' + data.code + '"><div class="col-xs-4 col-md-2 category-grid"><div><img class="category-icon lazy" src="myimages/category/' + iconArr[i] + '.png"></div>' + desc + '</div></a>';
                     $('.categories').append(cat_str);
                 }
 
@@ -242,8 +548,388 @@ if (page == 'login') {
     $('title').html(title_change + ' | BizApp-Mall');
 }
 
+if (page == 'register-seller') {
+
+}
+
 if (page == 'register') {
-    $('title').html(title_change + ' | BizApp-Mall');
+    //    alert("in");
+    //    window.fbAsyncInit = function () {
+    //        FB.init({
+    //            appId: '209259326239179',
+    //            xfbml: true,
+    //            version: 'v2.9'
+    //        });
+    //        FB.AppEvents.logPageView();
+    //    };
+    //
+    //    (function (d, s, id) {
+    //        var js, fjs = d.getElementsByTagName(s)[0];
+    //        if (d.getElementById(id)) {
+    //            return;
+    //        }
+    //        js = d.createElement(s);
+    //        js.id = id;
+    //        js.src = "//connect.facebook.net/en_US/sdk.js";
+    //        fjs.parentNode.insertBefore(js, fjs);
+    //    }(document, 'script', 'facebook-jssdk'));
+    //    $('title').html(title_change + ' | BizApp-Mall');
+    //
+    //    FB.api('/me', {
+    //            locale: 'en_US',
+    //            fields: 'name, email'
+    //        },
+    //        function (response) {
+    //            console.log(response.email);
+    //        }
+    //    );
+
+    $('#register-form').submit(function () {
+        var pw1 = $('#pw1').val();
+        var pw2 = $('#pw2').val();
+        var agree = $('#agree');
+
+        if (pw2 === pw1) {
+            alert("Registration Complete");
+            return true;
+
+        } else {
+            alert("Password mismatched");
+        }
+
+        return false; // return false to cancel form action
+    });
+}
+
+if (page === "purchase-history") {
+    var userID = localStorage.getItem(appname + '_userID');
+
+    function receivedItem(id) {
+        $.get(home + '/api/get_cart_info.php?action=updateComplete&id=' + id + '&uid=' + userID, function (data) {
+            alert(data);
+            location.reload();
+        });
+    }
+
+    $('.bizapp-sort-by-options__option').each(function () {
+        $(this).on('click', function () {
+            $('.bizapp-sort-by-options__option').each(function () {
+                if ($(this).hasClass('option-selected')) {
+                    $(this).removeClass('option-selected');
+                }
+            });
+            $(this).addClass('option-selected');
+            var option = $(this).attr('data-option');
+
+            $('.history-section').each(function () {
+                if ($(this).hasClass('shown')) {
+                    $(this).removeClass('shown').addClass('hide-section');
+                }
+            });
+            var select = '.' + option;
+            $(select).removeClass('hide-section').addClass('shown');
+        });
+    });
+
+    if (userID != 0) {
+        $.getJSON(home + '/api/get_cart_info.php?action=history&uid=' + userID, function (dataCart) {
+            $.each(dataCart, function (i, dataCartUser) {
+                if (dataCartUser.payment_status == 0 && dataCartUser.emall_fpxurl != "") {
+                    console.log(dataCartUser);
+                    var shopName = '';
+                    var topay_str = '<div class="col-xs-12 col-md-12" style="padding:0.5em 0;border-bottom:1px solid lightgray;"> <div class="col-md-12 order-id" style="padding:0"><span class="shop-name-' + dataCartUser.id + '"></span><span style="float:right;text-align:right">Order ID: ' + dataCartUser.id + '</span></div> <div class="col-xs-8 col-md-10 prod-list-' + dataCartUser.id + '" style="padding:0"></div> <div class="col-xs-4 col-md-2" style="text-align:center;padding-top:20px;color:orange">RM' + dataCartUser.price_sum + '<br><a href="' + dataCartUser.emall_fpxurl + '" target="_blank" class="hvr-sweep-to-top login-sub" style="color:white">Pay Now</a><br><a href="javascript:void(0)" class="hvr-sweep-to-top login-sub view-detail" style="color:white;background:orange">View Detail</a></div> </div>';
+                    $('.purchase-history-list .topay-list').append(topay_str);
+                    $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + dataCartUser.seller_id + '&order=shop_detail', function (data) {
+                        var select = '.shop-name-' + dataCartUser.id;
+                        $(select).html(data[0].nama);
+                    });
+
+                    $('.view-detail').on('click', function () {
+                        $('.modal-title').html('Order ID: ' + dataCartUser.id);
+                        $('.modal-body').html('Deliver to: <br>' + dataCartUser.delivery_name + ' (' + dataCartUser.delivery_phone + ')<br><table><tr><td>' + dataCartUser.delivery_address1 + ', ' + dataCartUser.delivery_address2 + ',</td></tr><tr><td>' + dataCartUser.delivery_address3 + ',</td></tr><tr><td>' + dataCartUser.delivery_postcode + ', ' + dataCartUser.delivery_state + '</td></tr></table><div style="text-align:right">Order date: ' + dataCartUser.checkin_date + '</div>');
+                        $('#detailModal').modal({
+                            show: true
+                        })
+                    });
+
+                    var product1 = '';
+                    var product2 = '';
+                    var product3 = '';
+                    var product4 = '';
+                    var product5 = '';
+                    var product6 = '';
+                    var product7 = '';
+                    var product8 = '';
+                    var product9 = '';
+                    var product10 = '';
+                    if (dataCartUser.product1 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product1, function (data) {
+                            product1 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity1 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product1);
+                        });
+                    }
+                    if (dataCartUser.product2 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product2, function (data) {
+                            product2 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity2 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product2);
+                        });
+                    }
+                    if (dataCartUser.product3 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product3, function (data) {
+                            product3 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity3 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product3);
+                        });
+                    }
+                    if (dataCartUser.product4 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product4, function (data) {
+                            product4 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity4 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product4);
+                        });
+                    }
+                    if (dataCartUser.product5 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product5, function (data) {
+                            product5 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity5 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product5);
+                        });
+                    }
+                    if (dataCartUser.product6 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product6, function (data) {
+                            product6 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity6 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product6);
+                        });
+                    }
+                    if (dataCartUser.product7 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product7, function (data) {
+                            product7 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity7 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product7);
+                        });
+                    }
+                    if (dataCartUser.product8 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product8, function (data) {
+                            product8 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity8 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product8);
+                        });
+                    }
+                    if (dataCartUser.product9 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product9, function (data) {
+                            product9 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity9 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product9);
+                        });
+                    }
+                    if (dataCartUser.product10 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product10, function (data) {
+                            product10 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity10 + '</div> </div>';
+                            var select = '.purchase-history-list .topay-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product10);
+                        });
+                    }
+
+                } else if (dataCartUser.payment_status == 1 && dataCartUser.completed == 0) {
+                    var shopName = '';
+                    var toreceive_str = '<div class="col-xs-12 col-md-12" style="padding:0.5em 0;border-bottom:1px solid lightgray;"> <div class="col-md-12 order-id" style="padding:0"><span class="shop-name-' + dataCartUser.id + '"></span><span style="float:right;text-align:right">Order ID: ' + dataCartUser.id + '</span></div> <div class="col-xs-8 col-md-10 prod-list-' + dataCartUser.id + '" style="padding:0"></div> <div class="col-xs-4 col-md-2" style="text-align:center;padding-top:20px;color:orange">RM' + dataCartUser.price_sum + '<br><a href="javascript:void(0)" onclick="receivedItem(' + dataCartUser.id + ')" class="hvr-sweep-to-top login-sub" style="color:white">Received</a><br><a href="javascript:void(0)" class="hvr-sweep-to-top login-sub view-detail2" style="color:white;background:orange">View Detail</a></div> </div>';
+                    $('.purchase-history-list .toreceive-list').append(toreceive_str);
+                    $('.view-detail2').on('click', function () {
+                        $('.modal-title').html('Order ID: ' + dataCartUser.id);
+                        $('.modal-body').html('Deliver to: <br>' + dataCartUser.delivery_name + ' (' + dataCartUser.delivery_phone + ')<br><table><tr><td>' + dataCartUser.delivery_address1 + ', ' + dataCartUser.delivery_address2 + ',</td></tr><tr><td>' + dataCartUser.delivery_address3 + ',</td></tr><tr><td>' + dataCartUser.delivery_postcode + ', ' + dataCartUser.delivery_state + '</td></tr></table><div style="text-align:right">Order date: ' + dataCartUser.checkin_date + '</div>');
+                        $('#detailModal').modal({
+                            show: true
+                        })
+                    });
+                    $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + dataCartUser.seller_id + '&order=shop_detail', function (data) {
+                        var select = '.shop-name-' + dataCartUser.id;
+                        $(select).html(data[0].nama);
+                    });
+                    var product1 = '';
+                    var product2 = '';
+                    var product3 = '';
+                    var product4 = '';
+                    var product5 = '';
+                    var product6 = '';
+                    var product7 = '';
+                    var product8 = '';
+                    var product9 = '';
+                    var product10 = '';
+                    if (dataCartUser.product1 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product1, function (data) {
+                            product1 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity1 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product1);
+                        });
+                    }
+                    if (dataCartUser.product2 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product2, function (data) {
+                            product2 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity2 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product2);
+                        });
+                    }
+                    if (dataCartUser.product3 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product3, function (data) {
+                            product3 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity3 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product3);
+                        });
+                    }
+                    if (dataCartUser.product4 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product4, function (data) {
+                            product4 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity4 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product4);
+                        });
+                    }
+                    if (dataCartUser.product5 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product5, function (data) {
+                            product5 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity5 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product5);
+                        });
+                    }
+                    if (dataCartUser.product6 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product6, function (data) {
+                            product6 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity6 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product6);
+                        });
+                    }
+                    if (dataCartUser.product7 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product7, function (data) {
+                            product7 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity7 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product7);
+                        });
+                    }
+                    if (dataCartUser.product8 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product8, function (data) {
+                            product8 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity8 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product8);
+                        });
+                    }
+                    if (dataCartUser.product9 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product9, function (data) {
+                            product9 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity9 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product9);
+                        });
+                    }
+                    if (dataCartUser.product10 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product10, function (data) {
+                            product10 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity10 + '</div> </div>';
+                            var select = '.purchase-history-list .toreceive-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product10);
+                        });
+                    }
+
+                } else if (dataCartUser.trackingno != "0" && dataCartUser.completed == 1) {
+                    var shopName = '';
+                    var completed_str = '<div class="col-xs-12 col-md-12" style="padding:0.5em 0;border-bottom:1px solid lightgray;"> <div class="col-md-12 order-id" style="padding:0"><span class="shop-name-' + dataCartUser.id + '"></span><span style="float:right;text-align:right">Order ID: ' + dataCartUser.id + '</span></div> <div class="col-xs-8 col-md-10 prod-list-' + dataCartUser.id + '" style="padding:0"></div> <div class="col-xs-4 col-md-2" style="text-align:center;padding-top:20px;color:orange">RM' + dataCartUser.price_sum + '<br><a href="javascript:void(0)" class="hvr-sweep-to-top login-sub view-detail2" style="color:white;background:orange">View Detail</a></div> </div>';
+                    $('.purchase-history-list .completed-list').append(completed_str);
+                    $('.view-detail2').on('click', function () {
+                        $('.modal-title').html('Order ID: ' + dataCartUser.id);
+                        $('.modal-body').html('Deliver to: <br>' + dataCartUser.delivery_name + ' (' + dataCartUser.delivery_phone + ')<br><table><tr><td>' + dataCartUser.delivery_address1 + ', ' + dataCartUser.delivery_address2 + ',</td></tr><tr><td>' + dataCartUser.delivery_address3 + ',</td></tr><tr><td>' + dataCartUser.delivery_postcode + ', ' + dataCartUser.delivery_state + '</td></tr></table><div style="text-align:right">Order date: ' + dataCartUser.checkin_date + '</div>');
+                        $('#detailModal').modal({
+                            show: true
+                        })
+                    });
+                    $.getJSON('http://mall.bizapp.my/get_shop.php?id=' + dataCartUser.seller_id + '&order=shop_detail', function (data) {
+                        var select = '.shop-name-' + dataCartUser.id;
+                        $(select).html(data[0].nama);
+                    });
+                    var product1 = '';
+                    var product2 = '';
+                    var product3 = '';
+                    var product4 = '';
+                    var product5 = '';
+                    var product6 = '';
+                    var product7 = '';
+                    var product8 = '';
+                    var product9 = '';
+                    var product10 = '';
+                    if (dataCartUser.product1 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product1, function (data) {
+                            product1 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity1 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product1);
+                        });
+                    }
+                    if (dataCartUser.product2 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product2, function (data) {
+                            product2 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity2 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product2);
+                        });
+                    }
+                    if (dataCartUser.product3 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product3, function (data) {
+                            product3 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity3 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product3);
+                        });
+                    }
+                    if (dataCartUser.product4 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product4, function (data) {
+                            product4 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity4 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product4);
+                        });
+                    }
+                    if (dataCartUser.product5 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product5, function (data) {
+                            product5 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity5 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product5);
+                        });
+                    }
+                    if (dataCartUser.product6 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product6, function (data) {
+                            product6 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity6 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product6);
+                        });
+                    }
+                    if (dataCartUser.product7 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product7, function (data) {
+                            product7 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity7 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product7);
+                        });
+                    }
+                    if (dataCartUser.product8 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product8, function (data) {
+                            product8 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity8 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product8);
+                        });
+                    }
+                    if (dataCartUser.product9 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product9, function (data) {
+                            product9 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity9 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product9);
+                        });
+                    }
+                    if (dataCartUser.product10 != "0") {
+                        $.getJSON('http://mall.bizapp.my/get_products.php?action=single&id=' + dataCartUser.product10, function (data) {
+                            product10 = '<div style="display:inline-block;position:relative;border:1px solid lightgray;width:15vmin;height:15vmin"><img src="http://corrad.visionice.net/bizapp/upload/product/' + data[0].attachment + '" width="100%" height="100%" class="lazy"> <div style="position:absolute;top:0;right:0;padding:3px 5px;background:orange;color:white;border-bottom-left-radius:50%;">x' + dataCartUser.quantity10 + '</div> </div>';
+                            var select = '.purchase-history-list .completed-list .prod-list-' + dataCartUser.id;
+                            $(select).append(product10);
+                        });
+                    }
+                }
+            });
+            $('.purchase-history-list .topay-list').append("Note that all purchases above must be paid in 12 hours or it will be deleted.");
+        });
+    }
+
 }
 
 if (page_name === "category") {
@@ -457,6 +1143,17 @@ if (page_name === "product") {
 }
 
 if (page_name === "shop") {
+
+    $(document).ready(function () {
+        for (var i = 0; i < 2; i++) {
+            $('<div class="item" style="margin:0"> <a href="#"><img class="promo-carousel-img" src="../myimages/banner/raya.jpg" alt="BizApp Raya"></a> </div>').appendTo('.carousel-inner');
+            $('<li data-target="#promo-carousel" data-slide-to="' + i + '"></li>').appendTo('.carousel-indicators')
+
+        }
+        $('.item').first().addClass('active');
+        $('.carousel-indicators > li').first().addClass('active');
+        $('#promo-carousel').carousel();
+    });
     //get discover products
     var pid = $(location).attr('pathname');
     pid = pid.split('/');
@@ -472,7 +1169,7 @@ if (page_name === "shop") {
 
     window.onmouseover = function (e) {
         if (e.target.className == "bizapp-sort-by-options__option price-key" || e.target.className == "dropdown-price price-low-high" || e.target.className == "dropdown-price price-high-low" || e.target.className == "bizapp-sort-by-options__option price-key option-selected" || e.target.className == "price-selection") {} else {
-            $('.bizapp - dropdown - popover').attr('style', 'visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2');
+            $('.bizapp-dropdown-popover').attr('style', 'visibility:hidden;position:absolute;top:40px;left:0;width:230px;height:100px;z-index:2');
         }
     };
 
@@ -521,6 +1218,17 @@ if (page_name === "shop") {
                     $('.shop_logo').attr('src', '../' + unavailable);
                 }
             }
+            var url_str = window.location.href;
+            var title_str = data[0].nama + '@bizapp-mall';
+            var description_str = 'Let\'s see my shop at BizApp-Mall';
+            var image_str = 'http://corrad.visionice.net/bizapp/upload/profile/' + shop_img;
+
+            $('.fb-share').on('click', function () {
+                window.open('https://www.facebook.com/sharer/sharer.php?u=' + url_str + '&picture=' + image_str + '&title=' + title_str + '&caption=www.ansi.com.my/bizappmall&description=' + description_str, 'name', 'height=200,width=150');
+            });
+            $('.tweet-share').on('click', function () {
+                window.open('http://twitter.com/share?text=' + title_str + ' ' + description_str + ' @&url=' + url_str + '&hashtags=bizappmall,' + dataShop[0].nama, 'name', 'height=500,width=800');
+            });
         });
     }
 
@@ -560,6 +1268,8 @@ if (page_name === "shop") {
 }
 
 if (page === "checkout") {
+    $('.panel-step').height($('.panel-step:nth-child(2)').height());
+
     var cart_obj = JSON.parse(localStorage.getItem(appname + 'simpleCart_items'));
     var shopArr = [];
     var prodArr = [];
@@ -594,9 +1304,9 @@ if (page === "checkout") {
             shop_name = dataShop[0].nama;
             var shop_container = '';
             if (i == 0) {
-                shop_container = '<a class="shop-btn" data-pid="' + dataShop[0].pid + '" role="button" data-toggle="collapse" data-parent="#accordion" href="#shop_' + dataShop[0].pid + '" aria-expanded="true" aria-controls="shop_' + dataShop[0].pid + '"><div class="panel panel-default"> <div class="panel-heading" role="tab" id="shopHead_' + dataShop[0].pid + '"> <h4 class="panel-title"><img class="shop-logo" src="' + shop_image + '" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + shop_name + '<a href="shop/' + dataShop[0].pid + '" class="view-shop" target="_self">View Shop</a></h4> </div> <div id="shop_' + dataShop[0].pid + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shopHead_' + dataShop[0].pid + '"></a> <div class="shopPanel_' + dataShop[0].pid + ' panel-body"> <iframe class="cart-frame shopFrame_' + dataShop[0].pid + '" src="cart-frame.html?id=' + dataShop[0].pid + '"></iframe> </div> </div> </div>';
+                shop_container = '<a class="shop-btn" data-pid="' + dataShop[0].pid + '" role="button" data-toggle="collapse" data-parent="#accordion" href="#shop_' + dataShop[0].pid + '" aria-expanded="true" aria-controls="shop_' + dataShop[0].pid + '"><div class="panel panel-default"> <div class="panel-heading" role="tab" id="shopHead_' + dataShop[0].pid + '"> <h4 class="panel-title"><img class="shop-logo" src="' + shop_image + '" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + shop_name + '</h4> </div> <div id="shop_' + dataShop[0].pid + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shopHead_' + dataShop[0].pid + '"></a> <div class="shopPanel_' + dataShop[0].pid + ' panel-body"> <iframe class="cart-frame shopFrame_' + dataShop[0].pid + '" src="cart-frame.html?id=' + dataShop[0].pid + '"></iframe> </div> </div> </div>';
             } else {
-                shop_container = '<a class="shop-btn" data-pid="' + dataShop[0].pid + '" role="button" data-toggle="collapse" data-parent="#accordion" href="#shop_' + dataShop[0].pid + '" aria-expanded="true" aria-controls="shop_' + dataShop[0].pid + '"><div class="panel panel-default"> <div class="panel-heading" role="tab" id="shopHead_' + dataShop[0].pid + '"> <h4 class="panel-title"><img class="shop-logo" src="' + shop_image + '" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + shop_name + '<a href="shop/' + dataShop[0].pid + '" class="view-shop" target="_self">View Shop</a></h4> </div> <div id="shop_' + dataShop[0].pid + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shopHead_' + dataShop[0].pid + '"></a> <div class="shopPanel_' + dataShop[0].pid + ' panel-body"> <iframe class="cart-frame shopFrame_' + dataShop[0].pid + '" src="cart-frame.html?id=' + dataShop[0].pid + '"></iframe> </div> </div> </div>';
+                shop_container = '<a class="shop-btn" data-pid="' + dataShop[0].pid + '" role="button" data-toggle="collapse" data-parent="#accordion" href="#shop_' + dataShop[0].pid + '" aria-expanded="true" aria-controls="shop_' + dataShop[0].pid + '"><div class="panel panel-default"> <div class="panel-heading" role="tab" id="shopHead_' + dataShop[0].pid + '"> <h4 class="panel-title"><img class="shop-logo" src="' + shop_image + '" style="height:2em;width:2em;object-fit:cover;border-radius:50%;border:1px solid #f57400"> ' + shop_name + '</h4> </div> <div id="shop_' + dataShop[0].pid + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shopHead_' + dataShop[0].pid + '"></a> <div class="shopPanel_' + dataShop[0].pid + ' panel-body"> <iframe class="cart-frame shopFrame_' + dataShop[0].pid + '" src="cart-frame.html?id=' + dataShop[0].pid + '"></iframe> </div> </div> </div>';
             }
 
             $('.checkout-wrapper').append(shop_container);
@@ -727,7 +1437,7 @@ if (page_name === "confirmation") {
         //        }, 3000);
 
         setTimeout(function () {
-            $.getJSON('../get_cart_info.php?action=insert', {
+            $.getJSON(home + '/api/get_cart_info.php?action=insert', {
                 uid: userid,
                 pid: pid,
                 product1: prodArr[0],
@@ -823,12 +1533,12 @@ if (page_name === "confirmation") {
                                     domainname: domainname
                                 },
                                 success: function (dataBillPliz) {
-                                    //                                    alert(dataBillPliz);
+                                    alert(dataBillPliz);
                                     //simpan url (emall_fpxurl)
-                                    $.get('../get_cart_info.php?action=updatefpx&fpxurl=' + dataBillPliz + '&uid=' + userid + '&batchid=' + batch_id, function (dataCartFPX) {
+                                    $.get(home + '/api/get_cart_info.php?action=updatefpx&fpxurl=' + dataBillPliz + '&uid=' + userid + '&batchid=' + batch_id, function (dataCartFPX) {
                                         window.open(dataBillPliz, '_blank');
-                                        $.get('../get_cart_info.php?action=updatecheckout&uid=' + userid + '&batchid=' + batch_id, function () {
-                                            console.log(cart_obj);
+                                        $.get(home + '/api/get_cart_info.php?action=updatecheckout&uid=' + userid + '&batchid=' + batch_id, function () {
+                                            //                                            console.log(cart_obj);
                                             $.each(paymentStored, function (i, dataPayment) {
                                                 simpleCart.each(function (item) {
                                                     if (item.get("prodid") == dataPayment) {
@@ -837,8 +1547,8 @@ if (page_name === "confirmation") {
                                                 });
                                             });
 
-                                            console.log(cart_obj);
-                                            window.open('../checkout', '_self');
+                                            //                                            console.log(cart_obj);
+                                            window.open(home + '/purchase-history', '_self');
                                         });
                                     });
                                 }
@@ -920,14 +1630,15 @@ if (page_name === "search-shop") {
 }
 
 if (page_name === "search-product") {
-    var searchParam = page;
+    var searchParam = decodeURIComponent(page);
+    console.log(searchParam);
 
     $('.search-param-page').html(searchParam);
 
     if (searchParam == "") {
         $('.search-input').val("");
     } else {
-        $('.search-input').val(decodeURIComponent(searchParam));
+        $('.search-input').val(searchParam);
     }
 
     $.getJSON('http://mall.bizapp.my/get_category.php', function (dataMain) {
@@ -1005,7 +1716,7 @@ if (page_name === "search-product") {
             $('.product-found-list').html('');
             for (i = 0; i < results.length; i++) {
                 console.log(results[i].id);
-                var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + results[i].id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + results[i].attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + results[i].attachment + '"><p class="item_name">' + results[i].productname + '</p><p class="row price-like-container"><span class="item_price">RM' + results[i].price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + results[i].id + '">0</span></span></p></div></div></a></div>';
+                var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + results[i].id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + results[i].attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + results[i].attachment + '" width="100%" height="100%"><p class="item_name">' + results[i].productname + '</p><p class="row price-like-container"><span class="item_price">RM' + results[i].price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + results[i].id + '">0</span></span></p></div></div></a></div>';
                 $('.product-found-list').append(top_str);
                 var selector = '.item_like_' + results[i].id;
                 getLikeNumber("get", "product", selector, results[i].id);
@@ -1041,7 +1752,7 @@ if (page_name === "search-product") {
 function getProductsWithLimit(target, limit) {
     $.getJSON('http://mall.bizapp.my/get_products.php?action=teaser&limit=' + limit, function (data) {
         $.each(data, function (i, data) {
-            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
+            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" width="100%" height="100%"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
             $(target).append(top_str);
             var selector = '.item_like_' + data.id;
             getLikeNumber("get", "product", selector, data.id);
@@ -1074,7 +1785,7 @@ function getProductsNoLimit(action, target, code, sortby, orderby, page) {
     $(target).html('');
     $.getJSON('http://mall.bizapp.my/get_products.php?action=' + action + '&code=' + code + '&sortby=' + sortby + '&orderby=' + orderby + '&page=' + page, function (data) {
         $.each(data, function (i, data) {
-            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
+            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" width="100%" height="100%"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
             $(target).append(top_str);
             var selector = '.item_like_' + data.id;
             getLikeNumber("get", "product", selector, data.id);
@@ -1121,7 +1832,7 @@ function getLikeNumber(action, target, target_class, id) {
 function getProductSingle(action, prodid, target) {
     $.getJSON('http://mall.bizapp.my/get_products.php?action=' + action + '&id=' + prodid, function (data) {
         $.each(data, function (i, data) {
-            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
+            var top_str = '<div class="col-xs-6 col-md-2 product-grid-wrapper"><a href="' + home + '/product/' + data.id + '"><div class="product-grid product-grid-shadow"><div><img src="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" class="item_image lazy" data-original="http://corrad.visionice.net/bizapp/upload/product/' + data.attachment + '" width="100%" height="100%"><p class="item_name">' + data.productname + '</p><p class="row price-like-container"><span class="item_price">RM' + data.price + '</span><span class="item_like"><i class="fa fa-heart-o" aria-hidden="true"></i> <span class="item_like_' + data.id + '">0</span></span></p></div></div></a></div>';
             $(target).append(top_str);
             var selector = '.item_like_' + data.id;
             getLikeNumber("get", "product", selector, data.id);
